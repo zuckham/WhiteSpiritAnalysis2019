@@ -1,0 +1,160 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:App"
+        mc:Ignorable="d"
+        Title="白酒基酒图谱识别系统" Height="900" Width="1600" Icon="images/coctail.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80px"/>
+            <RowDefinition Height="681*"/>
+        </Grid.RowDefinitions>
+        <DockPanel  Background="#FF007ACC" >
+            <DockPanel.Resources>
+                <Style x:Key="MgtMenuItem" TargetType="MenuItem">
+                    <Setter Property="Height" Value="80px"/>
+                    <Setter Property="Width" Value="80px"/>
+                    <Setter Property="Background" Value="#FF007ACC"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style x:Key="MgtSubMenuItem" TargetType="MenuItem">
+                    <Setter Property="Background" Value="#FF137DD4"/>
+                    <Setter Property="BorderThickness" Value="0.2"/>
+                    <Setter Property="Padding" Value="0,5,0,5"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="#FF007ACC"/>
+                            <Setter Property="Background" Value="WhiteSmoke"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DockPanel.Resources>
+            <Grid>                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+            
+            <Menu Grid.Column="0" Background="#FF007ACC" Foreground="#FFF5F3F3"  VerticalAlignment="Center" HorizontalAlignment="Left"  >
+                
+                <MenuItem  Click="MenuItem_Click" InputGestureText="Ctrl+O" Tag="Welcome"  FontSize="14px" Style="{StaticResource MgtMenuItem}">
+                    <MenuItem.Header>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+                            <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="28px"  Foreground="#FFF5F3F3">&#xf0c2;</Label>
+                            <Label FontSize="14px" Foreground="#FFF5F3F3">系统首页</Label>
+                        </StackPanel>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem   FontSize="14px" Style="{StaticResource MgtMenuItem}">
+                    <MenuItem.Header>
+                        <StackPanel >
+                            <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="28px"  Foreground="#FFF5F3F3">&#xf0ae;</Label>
+                            <Label FontSize="14px" Foreground="#FFF5F3F3">样本数据</Label>
+                        </StackPanel>                          
+                    </MenuItem.Header>                       
+                        <MenuItem Header="数据批量导入"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="Group"/>
+                        <MenuItem Header="数据浏览"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="Sample"/>
+                        <MenuItem Header="分类"  Style="{StaticResource MgtSubMenuItem}"/>
+                    </MenuItem>
+                <MenuItem  InputGestureText="Ctrl+W" Style="{StaticResource MgtMenuItem}" Click="MenuItem_Click" Tag="Category">
+                    <MenuItem.Header>
+                        <StackPanel Background="#FF007ACC" >
+                            <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="28px" Foreground="#FFF5F3F3">&#xf0f2;</Label>
+                            <Label Foreground="#FFF5F3F3" FontSize="14px">基酒数据</Label>
+                        </StackPanel>
+                    </MenuItem.Header>                  
+
+
+                </MenuItem>
+                <MenuItem  Click="MenuItem_Click" InputGestureText="Ctrl+C" Tag="Cancel"  Style="{StaticResource MgtMenuItem}" >
+                    <MenuItem.Header>
+                        <StackPanel Background="#FF007ACC" >
+                            <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="28px" Foreground="#FFF5F3F3">&#xf268;</Label>
+                            <Label Foreground="#FFF5F3F3" FontSize="14px">计算设置</Label>
+                        </StackPanel>
+                    </MenuItem.Header>
+                    <MenuItem Style="{StaticResource MgtSubMenuItem}" Header="BP数据训练" Click="MenuItem_Click" Tag="Train"/>
+                    </MenuItem>
+                <MenuItem  Click="MenuItem_Click" InputGestureText="Ctrl+O" Tag="Config" Style="{StaticResource MgtMenuItem}">
+                    <MenuItem.Header>
+                        <StackPanel Background="#FF007ACC" >
+                            <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="28px" Foreground="#FFF5F3F3">&#xf013;</Label>
+                            <Label Foreground="#FFF5F3F3" FontSize="14px">系统配置</Label>
+                        </StackPanel>
+                    </MenuItem.Header>
+                        <MenuItem Header="数据库设置"   Tag="Database" Click="MenuItem_Click" Style="{StaticResource MgtSubMenuItem}">
+                            <MenuItem.Icon>
+                                <Label Style="{DynamicResource FontAwesome}" Foreground="White" FontSize="16px">&#xf1c0;</Label>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="用户管理"  Style="{StaticResource MgtSubMenuItem}" Tag="UserManage" Click="MenuItem_Click">
+                        <MenuItem.Icon>
+                            <Label Style="{DynamicResource FontAwesome}" Foreground="White" FontSize="16px">&#xf012;</Label>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                        <MenuItem Header="角色管理"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="RoleManage">
+                        <MenuItem.Icon>
+                            <Label Style="{DynamicResource FontAwesome}" Foreground="White" FontSize="16px">&#xf007;</Label>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                        <MenuItem Header="密码管理"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="ChangePassword">
+                        <MenuItem.Icon>
+                            <Label Style="{DynamicResource FontAwesome}" Foreground="White" FontSize="16px">&#xf084;</Label>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+            <Menu BorderThickness="0" Grid.Column="1" Background="#FF007ACC" Foreground="#FFF5F3F3"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,50,0" x:Name="Menu_Login">               
+                <MenuItem VerticalAlignment="Center" HorizontalAlignment="Center">                   
+                    <MenuItem.Header>
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource FontAwesome}" FontSize="26px" Foreground="AliceBlue" HorizontalAlignment="Center" VerticalAlignment="Center">&#xf007;</TextBlock>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding UserName}"  Foreground="AliceBlue"></TextBlock>
+                            </StackPanel>                       
+                    </MenuItem.Header>
+                        <MenuItem x:Name="MI_Login"  Background="#FF007ACC" Foreground="#FFF5F3F3" Click="MenuItem_Click" Tag="Login">
+                        <MenuItem.Icon>
+                            <TextBlock Style="{StaticResource FontAwesome}" FontSize="20px" HorizontalAlignment="Center" VerticalAlignment="Center">&#xf007;</TextBlock>
+                        </MenuItem.Icon>                            
+                            <MenuItem.Header>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">登录</TextBlock>
+                        </MenuItem.Header>
+                    </MenuItem>
+
+                        <MenuItem   Background="#FF007ACC" Foreground="#FFF5F3F3" Tag="LogOut" Click="MenuItem_Click">                           
+                            <MenuItem.Icon>
+                                <TextBlock Style="{StaticResource FontAwesome}" FontSize="20px" HorizontalAlignment="Center" VerticalAlignment="Center">&#xf007;</TextBlock>
+                            </MenuItem.Icon>
+                            <MenuItem.Header>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">注销</TextBlock>
+                            </MenuItem.Header>
+                        </MenuItem>
+
+                        <MenuItem x:Name="MI_PersonalCenter"  Background="#FF007ACC" Foreground="#FFF5F3F3" >
+                        <MenuItem.Icon>
+                            <TextBlock Style="{StaticResource FontAwesome}" FontSize="20px">&#xf007;</TextBlock>
+                        </MenuItem.Icon>
+                        <MenuItem.Header>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">个人中心</TextBlock>
+                        </MenuItem.Header>
+                    </MenuItem>
+                </MenuItem>
+
+            </Menu>
+            </Grid>
+        </DockPanel>
+        <Frame HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="1" Name="MainFrame" NavigationUIVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            
+        </Frame>
+        
+
+
+
+    </Grid>
+</Window>

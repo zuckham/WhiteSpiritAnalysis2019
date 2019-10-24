@@ -1,0 +1,24 @@
+﻿<Window x:Class="SaveDataDialogWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:App"
+        mc:Ignorable="d"
+        Title="保存数据" Height="240" Width="300"
+        FontSize="14px"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid>
+        <StackPanel>
+            <Label>请输入样品编号：（必填）</Label>
+            <TextBox Margin="10,0" Height="28" x:Name="TB_SampleCode"/>
+
+            <Label>请输入样品描述：（选填）</Label>
+            <TextBox Margin="10,0" Height="80" x:Name="TB_Description"/>
+            <WrapPanel HorizontalAlignment="Center" Margin="0,10,0,0">
+            <Button Margin="0,0,10,0" Click="Button_Click" Tag="Save">确认保存</Button>
+                <Button Margin="0,0,0,0" Click="Button_Click" Tag="Cancel">取消</Button>
+            </WrapPanel>
+        </StackPanel>
+    </Grid>
+</Window>

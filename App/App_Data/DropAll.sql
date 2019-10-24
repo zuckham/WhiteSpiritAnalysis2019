@@ -1,0 +1,14 @@
+﻿DROP TABLE chromatographChildInfoes
+DROP TABLE chromatographInfoes
+DROP TABLE SpectrographInfoes
+DROP TABLE SampleInfoes
+DROP TABLE CategoryInfoes
+DROP TABLE SampleCategoryInfoes
+DROP TABLE WhiteSpiritInfoes
+DROP TABLE RoleInfoes
+DROP TABLE UserInfoes
+DROP TABLE UserRoleInfoes
+Drop table RecordInfoes
+drop table nmrinfoes
+drop table ChromatographNameInfoes
+DROP table _MigrationHistory

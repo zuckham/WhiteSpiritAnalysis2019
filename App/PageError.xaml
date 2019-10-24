@@ -1,0 +1,21 @@
+﻿<Page x:Class="PageError"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:App"
+      mc:Ignorable="d" 
+      d:DesignHeight="750" d:DesignWidth="1000"
+      Title="出错了" Background="#FF84b0dd" Foreground="WhiteSmoke" FontSize="14px">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Source="images/error.png" Height="308" Stretch="Fill"></Image>
+        <StackPanel Margin="100,0,0,0"  Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" >
+            <TextBlock x:Name="TB_Error" FontWeight="Bold" FontSize="16px" Margin="0,10">出错了，没有足够的权限！</TextBlock>
+            <Button BorderThickness="0"  Background="#FF84b0dd" Foreground="WhiteSmoke" FontSize="16px" FontWeight="Bold" Click="Button_Click">返回主页。</Button>
+        </StackPanel>
+    </Grid>
+</Page>

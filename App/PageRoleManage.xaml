@@ -1,0 +1,63 @@
+﻿<Page x:Class="PageRoleManage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:App"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="1000"
+      Title="角色管理"       
+      FontSize="16px" Background="White">
+    <Grid DataContext="CurrentRole">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Background="#FFCFCFCF">
+            <WrapPanel HorizontalAlignment="Center" Margin="0,20">
+                <Button Margin="40,10" Click="Button_Click" Tag="1">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Image Source="images/roleadmin.png" Stretch="Fill" MaxWidth="140"></Image>
+                        <TextBlock  HorizontalAlignment="Center" FontSize="18px">管理员</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Margin="40,10" Tag="2" Click="Button_Click">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Image Source="images/roleuser.png" Stretch="Fill"  MaxWidth="140"></Image>
+                        <TextBlock  HorizontalAlignment="Center" FontSize="18px">用户</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Margin="40,10" Tag="3" Click="Button_Click">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Image Source="images/roleguest.png" Stretch="Fill"  MaxWidth="140"></Image>
+                        <TextBlock  HorizontalAlignment="Center" FontSize="18px">访客</TextBlock>
+                    </StackPanel>
+                </Button>
+            </WrapPanel>
+            <WrapPanel HorizontalAlignment="Center" x:Name="WP_CurrentRole">
+                <TextBlock>当前角色：</TextBlock>
+                <TextBlock x:Name="TB_RoleName" Text="{Binding RoleName}"></TextBlock>
+            </WrapPanel>
+        </StackPanel>
+        <WrapPanel Grid.Row="1" x:Name="WP_Rights">
+            
+        </WrapPanel>
+        
+            <WrapPanel Margin="0,10,0,0" Grid.Row="2" HorizontalAlignment="Center">
+                <Button Background="#FF23CB13" Foreground="#FFE6F0F0" BorderBrush="{x:Null}" VerticalAlignment="Center" HorizontalAlignment="Center"  Click="OkOrCancel_Click"  Tag="OK" Margin="50,0,0,0">
+                    <WrapPanel>
+                        <Label Style="{DynamicResource FontAwesome}" Foreground="#FFF3F1F1">&#xf00c;</Label>
+                        <TextBlock Margin="8,0" VerticalAlignment="Center">确认</TextBlock>
+                    </WrapPanel>
+                </Button>
+                <Button Background="#FFCB5E13" Foreground="#FFE6F0F0" BorderBrush="{x:Null}" Click="OkOrCancel_Click" Tag="Cancel" Margin="50,0">
+                    <WrapPanel >
+                        <Label Style="{DynamicResource FontAwesome}" Foreground="#FFF3F1F1">&#xf00d;</Label>
+                        <TextBlock Margin="8,0" VerticalAlignment="Center">取消</TextBlock>
+                    </WrapPanel>
+                </Button>
+            </WrapPanel>
+        
+    </Grid>
+</Page>

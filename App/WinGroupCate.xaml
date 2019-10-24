@@ -1,0 +1,102 @@
+﻿<Window x:Class="WinGroupCate"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:App"
+        mc:Ignorable="d"
+        Title="WinGroupCate" Height="750" Width="1000"  Icon="images/coctail.ico">
+    <Grid Background="#FFF0F2F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+
+        <StackPanel Background="#FF007ACC"  Grid.Row="0"  Orientation="Horizontal"  x:Name="SP_Sample"  >
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="WhiteSmoke"></Setter>
+                    <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                    <Setter Property="Background" Value="{x:Null}"></Setter>
+                </Style>
+
+                <Style  TargetType="DataGridColumnHeader">
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                    <Setter Property="Background" Value="Black" />
+                    <Setter Property="Foreground" Value="White" />
+                </Style>
+            </StackPanel.Resources>
+            <Label  Foreground="#FFF5F3F3" VerticalAlignment="Center">批量指定分类</Label>
+            
+
+        </StackPanel>
+        <StackPanel   Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Center">类目查询：</TextBlock>
+            <TextBox MinWidth="300" VerticalAlignment="Center" Height="34" x:Name="TB_Keyword" VerticalContentAlignment="Center"></TextBox>
+            <Button Click="Button_Click" Tag="Search">
+                <WrapPanel Background="#FF797BB2"  HorizontalAlignment="Center" >
+                    <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="20px"   Foreground="#FFF5F3F3">&#xf002;</Label>
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,10,0"  Foreground="#FFF5F3F3">搜索</TextBlock>
+                </WrapPanel>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <TabControl   Margin="30,0,30,30" Background="#FFFFFFFF" MinWidth="700" x:Name="TC_Main">
+                <TabItem Header="指定类别"  >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="3"></ColumnDefinition>
+                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>                       
+                        <StackPanel Grid.Column="0">
+                            <Label>样本列表</Label>
+                            <ListBox x:Name="LB_Samples" Grid.Column="1" BorderThickness="0">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <WrapPanel>
+                                            <TextBlock Text="{Binding Sample.Code}"></TextBlock>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                        <GridSplitter Grid.Column="1" Width="3" Background="#FF007ACC" ResizeDirection="Columns"></GridSplitter>
+                        <local:UCCategory  x:Name="UC_Category" Grid.Column="2"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <ListBox MinWidth="200" x:Name="LB_Selected" Margin="0,0,0,30">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel>
+                            <TextBlock Text="{Binding Path=Name}"></TextBlock>
+                        </WrapPanel>
+                    </DataTemplate>
+
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label x:Name="LB_CurrentSelected" VerticalAlignment="Center">当前选择</Label>
+
+            <Button  Tag="Add" Click="Button_Click" Margin="30,0" Background="#FF797BB2">
+                <WrapPanel  HorizontalAlignment="Center"   >
+                    <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="20px"   Foreground="#FFF5F3F3">&#xf067;</Label>
+                    <TextBlock VerticalAlignment="Center"   Foreground="#FFF5F3F3" Margin="5,0">加入</TextBlock>
+                </WrapPanel>
+            </Button>
+            <Button  Margin="30,0" Tag="OK" Click="Button_Click" Background="#FF74BF28" >
+                <WrapPanel   >
+                    <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="20px"   Foreground="#FFF5F3F3">&#xf0c7;</Label>
+                    <TextBlock VerticalAlignment="Center"  Foreground="#FFF5F3F3" Margin="5,0">确定</TextBlock>
+                </WrapPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+    </Window>

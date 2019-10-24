@@ -1,0 +1,70 @@
+﻿<Page x:Class="PageWelcome"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:App"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="1300"
+      Title="PageWelcome"
+      Background="White"
+      >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Image HorizontalAlignment="Center"    Source="images/welcome.png" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="100,100,0,0" MaxHeight="300"/>
+        <StackPanel Grid.Column="1" Grid.Row="0" >
+            <StackPanel.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Margin" Value="10,20,10,0"/>
+                    <Setter Property="FontSize" Value="16px"></Setter>
+                    <Setter Property="Foreground" Value="#FF085E9A"></Setter>
+                    
+                </Style>
+            </StackPanel.Resources>
+            <Image Source="images/title.png" Margin="0,100,50,60" MaxHeight="36" HorizontalAlignment="Left"></Image>
+            <Label MouseDoubleClick="Label_MouseDoubleClick" Tag="Samples">
+                <WrapPanel>
+                    <TextBlock>样本数据：目前待处理有</TextBlock>
+                    <TextBlock  x:Name="TB_Samples" Text="{Binding SamplesCount}"></TextBlock>
+                    <TextBlock>条。</TextBlock>
+                </WrapPanel>
+            </Label>
+            <Label MouseDoubleClick="Label_MouseDoubleClick" Tag="Wines">
+                <WrapPanel>
+                    <TextBlock>基酒数据库：样本</TextBlock>
+                    <TextBlock  x:Name="TB_SpiritWines" Text="{Binding WinesCount}"></TextBlock>
+                    <TextBlock>条。</TextBlock>
+                </WrapPanel>
+            </Label>
+            <Label MouseDoubleClick="Label_MouseDoubleClick" Tag="Category">
+                <WrapPanel>
+                    <TextBlock>基酒数据库：种类</TextBlock>
+                    <TextBlock  x:Name="TB_Categoris" Text="{Binding CategorisCount}"></TextBlock>
+                    <TextBlock>条。</TextBlock>
+                </WrapPanel>
+            </Label>
+            
+            
+        </StackPanel>
+
+        <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" >
+            <WrapPanel Margin="40" x:Name="WP_Login" HorizontalAlignment="Center">
+                <TextBlock Style="{DynamicResource FontAwesome}" FontSize="22px" Margin="5,0" ToolTip="用户名">&#xf007;</TextBlock>               
+                <TextBox MinWidth="200" x:Name="TB_UserName" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"></TextBox>
+                <TextBlock Style="{DynamicResource FontAwesome}" FontSize="22px" Margin="5,0" ToolTip="密码" >&#xf084;</TextBlock>
+                <PasswordBox MinWidth="200" x:Name="TB_Password"    HorizontalContentAlignment="Left" VerticalContentAlignment="Center"></PasswordBox>
+                <Button Background="Green" Foreground="WhiteSmoke" Click="Button_Click">
+                    <TextBlock Margin="10,3">登录</TextBlock></Button>
+            </WrapPanel>
+            <TextBlock HorizontalAlignment="Center"  Foreground="#FFBAADAD" >四川理工学院</TextBlock>
+            <TextBlock HorizontalAlignment="Center" Margin="0,0,0,20"   Foreground="#FFBAADAD" >2018</TextBlock>
+        </StackPanel>
+    </Grid>
+</Page>

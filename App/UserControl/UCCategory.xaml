@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="UCCategory"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:App"
+             xmlns:wpf="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="300">
+    <Grid>
+        <!--<Grid.Resources>
+            <Contextmenu x:Key="CategoryContextMenu">
+                <MenuItem Header="修改目录" Cilck="MenuItem_Click"></MenuItem>
+                
+                
+            </Contextmenu>
+        </Grid.Resources>-->
+        <StackPanel>
+            <TreeView x:Name="TV_Category" Background="{x:Null}" BorderBrush="{x:Null}"  SelectedItemChanged="TV_Category_SelectedItemChanged">
+                <TreeView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="修改类目" Click="MenuItem_Click" Tag="Edit"></MenuItem>
+                        <MenuItem Header="删除类目" Click="MenuItem_Click"  Tag="Delete"></MenuItem>
+                        <MenuItem Header="增加同级" Click="MenuItem_Click" Tag="Add"></MenuItem>
+                        <MenuItem Header="增加子类" Click="MenuItem_Click" Tag="AddChild"></MenuItem>
+                    </ContextMenu>
+                </TreeView.ContextMenu>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Nodes}">
+                        <StackPanel>
+                            <TextBlock VerticalAlignment="Center" FontSize="14" Text="{Binding Name}" Margin="2,5,0,0">                                
+                            </TextBlock>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </StackPanel>
+       
+    </Grid>
+    
+</UserControl>

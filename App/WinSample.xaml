@@ -1,0 +1,187 @@
+﻿<Window x:Class="WinSample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:App"
+        mc:Ignorable="d"
+        Title="WinSample" Height="750" Width="1000" FontSize="14px"
+        Icon="images/coctail.ico">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="Background" Value="{x:Null}"/>
+
+        </Style>
+    </Window.Resources>
+    <Grid Background="#FFF0F2F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+
+        <StackPanel Background="#FF007ACC"  Grid.Row="0"  Orientation="Horizontal"  x:Name="SP_Sample"  >
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="WhiteSmoke"></Setter>
+                    <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                    <Setter Property="Background" Value="{x:Null}"></Setter>
+                  </Style>
+                
+                    <Style  TargetType="DataGridColumnHeader">
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="Background" Value="Black" />
+                        <Setter Property="Foreground" Value="White" />   
+                </Style>
+            </StackPanel.Resources>
+            <Label  Foreground="#FFF5F3F3" VerticalAlignment="Center">当前样品信息</Label>
+            <TextBlock VerticalAlignment="Center">编号：</TextBlock>
+            <TextBlock Text="{Binding Sample.Code, Mode=OneWay}" ></TextBlock>
+            <TextBlock VerticalAlignment="Center">描述：</TextBlock>
+            <TextBlock Text="{Binding Sample.Description,Mode=OneWay}" ></TextBlock>
+            <TextBlock VerticalAlignment="Center">数据：</TextBlock>
+            <TextBlock Text="{Binding DataDescription, Mode=OneWay}" ></TextBlock>
+
+        </StackPanel>
+        <StackPanel   Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Center">类目查询：</TextBlock>
+            <TextBox MinWidth="300" VerticalAlignment="Center" Height="34" x:Name="TB_Keyword"></TextBox>
+            <Button Click="Button_Click" Tag="Search">
+                <WrapPanel Background="#FF797BB2"  HorizontalAlignment="Center" >
+                    <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="20px"   Foreground="#FFF5F3F3">&#xf002;</Label>
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,10,0"  Foreground="#FFF5F3F3">搜索</TextBlock>
+                </WrapPanel>
+            </Button>
+        </StackPanel>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>                
+                <ColumnDefinition Width="260"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TabControl   Margin="30,0,30,30" Background="#FFFFFFFF"  x:Name="TC_Main" Grid.Column="0">
+                <TabItem Header="指定类别"  >
+                    <Grid >
+                        <local:UCCategory  x:Name="UC_Category"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="计算类别" HorizontalAlignment="Center">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="230"></RowDefinition>
+                            <RowDefinition Height="3*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <Button Click="Calc_Click" HorizontalAlignment="Left" Background="Green" Foreground="WhiteSmoke" VerticalAlignment="Top" Margin="20" Tag="Calculate" x:Name="BT_Calc">                                   
+                                <WrapPanel>
+                                    <Label Style="{StaticResource FontAwesome}" FontSize="18" Foreground="WhiteSmoke">&#xf04b;</Label>
+                                    <TextBlock VerticalAlignment="Center" Margin="10,0">计算</TextBlock>
+                                </WrapPanel>
+                            </Button>
+                            <ProgressBar x:Name="SP_Progress" Height="40" Background="#FFF0F9F6" >                                
+                            </ProgressBar>                           
+                        </StackPanel>
+                        <Label Height="26" VerticalAlignment="Bottom" >计算结果</Label>
+                        <DataGrid x:Name="DG_Results" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FF4168A0" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" Grid.Row="1">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="目标类别" Binding="{Binding CategoryName}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="目标样本" Binding="{Binding TargetSampleCode}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="光谱MAE" Binding="{Binding SpectroMAE}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="光谱MSE" Binding="{Binding SpectroMSE}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="光谱SIM" Binding="{Binding SpectroSIM}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="色谱MAE" Binding="{Binding ChromatoMAE}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="色谱MSE" Binding="{Binding ChromatoMSE}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="色谱SIM" Binding="{Binding ChromatoSIM}"></DataGridTextColumn>
+                            </DataGrid.Columns>
+
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="计算分析">
+                    <StackPanel>
+                        <WrapPanel>
+                            <TextBlock Width="90" HorizontalAlignment="Right" VerticalAlignment="Center">合并方法：</TextBlock>
+                            <ComboBox Width="200" BorderThickness="0" Background="{x:Null}" x:Name="CB_Method">
+                                <ComboBoxItem  IsSelected="True">求和</ComboBoxItem>
+                                <ComboBoxItem>平均</ComboBoxItem>
+                            </ComboBox>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Width="90" HorizontalAlignment="Right" VerticalAlignment="Center">计算指标：</TextBlock>
+                            <ComboBox Width="200" BorderThickness="0" Background="{x:Null}"  x:Name="CB_Factor">
+                                <ComboBoxItem  IsSelected="True">MAE</ComboBoxItem>
+                                <ComboBoxItem>MSE</ComboBoxItem>
+                                <ComboBoxItem>SIM</ComboBoxItem>
+                            </ComboBox>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Width="90" VerticalAlignment="Center">分析数据源：</TextBlock>
+                            <ComboBox Width="200" BorderThickness="0" Background="{x:Null}" x:Name="CB_Source">
+                                <ComboBoxItem  IsSelected="True">近红外</ComboBoxItem>
+                                <ComboBoxItem>色谱</ComboBoxItem>                                
+                            </ComboBox>
+                            <Button Click="Calc_Click" Background="Green" Foreground="WhiteSmoke"  Height="30" Margin="40,0,0,0" Tag="Group" x:Name="BT_Group">
+                            <WrapPanel>
+                                <Label Style="{StaticResource FontAwesome}" FontSize="18" Foreground="WhiteSmoke">&#xf04b;</Label>
+                                <TextBlock VerticalAlignment="Center" Margin="10,0">计算</TextBlock>
+                            </WrapPanel>
+                        </Button>
+                        </WrapPanel>
+                        <DataGrid x:Name="DG_Group" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HorizontalGridLinesBrush="#FF4082B7" VerticalGridLinesBrush="#FF4082B7">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="类目ID" Binding="{Binding CategoryID}"/>
+                                <DataGridTextColumn Header="类目" Binding="{Binding CategoryName}"/>
+                                <DataGridTextColumn  Binding="{Binding Value,StringFormat={}{0:N4}}" >
+                                    <DataGridTextColumn.Header>
+                                        <TextBlock Text="{Binding  ElementName=CB_Factor, Path=Text}"></TextBlock>
+                                    </DataGridTextColumn.Header>
+                                    </DataGridTextColumn>
+
+
+                            </DataGrid.Columns>
+                            
+                        </DataGrid>
+                        
+                        
+
+                    </StackPanel>
+                    
+                    
+                </TabItem>
+            </TabControl>
+         
+            <ListBox x:Name="LB_Selected" Margin="0,0,20,30" Grid.Column="1">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel>
+                            <TextBlock Text="{Binding Path=Name}"></TextBlock>
+                        </WrapPanel>
+                    </DataTemplate>
+
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </Grid>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label x:Name="LB_CurrentSelected" VerticalAlignment="Center">当前选择</Label>
+
+            <Button  Tag="Add" Click="Button_Click" Margin="30,0" Background="#FF797BB2">
+                <WrapPanel  HorizontalAlignment="Center"   >
+                    <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="20px"   Foreground="#FFF5F3F3">&#xf067;</Label>
+                    <TextBlock VerticalAlignment="Center"   Foreground="#FFF5F3F3">加入</TextBlock>
+                </WrapPanel>
+            </Button>
+            <Button  Margin="30,0" Tag="Ok" Click="Button_Click" Background="#FF74BF28" >
+                <WrapPanel   >
+                    <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="20px"   Foreground="#FFF5F3F3">&#xf0c7;</Label>
+                    <TextBlock VerticalAlignment="Center"  Foreground="#FFF5F3F3">确定</TextBlock>
+                </WrapPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

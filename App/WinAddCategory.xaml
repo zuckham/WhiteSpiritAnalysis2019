@@ -1,0 +1,50 @@
+﻿<Window x:Class="WinAddCategory"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:App"
+        mc:Ignorable="d"
+        Title="分类管理" Height="350" Width="400"
+        FontSize="14px">
+    <Grid>
+
+        <StackPanel Margin="10,20,10,10"  >
+            <WrapPanel Margin="0,0,0,10">
+                <TextBlock Width="60" HorizontalAlignment="Right" >上级类目</TextBlock>
+                <TextBox Width="250" x:Name="TB_Parent"  IsReadOnly="True"></TextBox>
+            </WrapPanel>
+            <WrapPanel Margin="0,0,0,10">
+                <TextBlock Width="60" HorizontalAlignment="Right" >名称</TextBlock>
+                <TextBox Width="250" x:Name="TB_Name" ></TextBox>
+            </WrapPanel>
+            <WrapPanel Margin="0,0,0,10">
+                <TextBlock Width="60">是否容器</TextBlock>
+                <CheckBox Width="250" x:Name="CB_IsContainer"  VerticalAlignment="Center" ></CheckBox>                
+            </WrapPanel>
+            <WrapPanel Margin="0,0,0,10">
+                <TextBlock Width="60">排序</TextBlock>
+                <TextBox Width="250" x:Name="TB_Order" ></TextBox>
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Width="60">描述</TextBlock>
+                <TextBox Width="250" Height="98" TextWrapping="Wrap"  AcceptsReturn="True" x:Name="TB_Description"></TextBox>
+            </WrapPanel>
+            <WrapPanel Margin="0,10,0,0">
+                <Button Background="#FF23CB13" Foreground="#FFE6F0F0" BorderBrush="{x:Null}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="100,0,20,0" Click="Button_Click"  Tag="OK">
+                    <WrapPanel>
+                        <Label Style="{DynamicResource FontAwesome}" Foreground="#FFF3F1F1">&#xf00c;</Label>
+                        <TextBlock Margin="3,0" VerticalAlignment="Center">确认</TextBlock>
+                    </WrapPanel>
+                </Button>
+                <Button Background="#FFCB5E13" Foreground="#FFE6F0F0" BorderBrush="{x:Null}" Click="Button_Click" Tag="Cancel" >
+                    <WrapPanel >
+                        <Label Style="{DynamicResource FontAwesome}" Foreground="#FFF3F1F1">&#xf00d;</Label>
+                        <TextBlock Margin="3,0" VerticalAlignment="Center">取消</TextBlock>
+                    </WrapPanel>
+                </Button>
+            </WrapPanel>
+        </StackPanel>
+        
+    </Grid>
+</Window>

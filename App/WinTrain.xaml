@@ -1,0 +1,96 @@
+﻿<Window x:Class="WinTrain"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:App"
+        mc:Ignorable="d"
+        Title="智能学习" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="stlButton">
+            <Setter Property="Foreground" Value="WhiteSmoke"></Setter>
+            <Setter Property="Background" Value="#FF007BB2"/>
+            <Setter Property="MinWidth" Value="40"/>
+            <Setter Property="Template">                
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border x:Name="border" Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path= Background}" 
+                                    Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Height}" 
+                                    CornerRadius="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=CornerRadius}" 
+                                    Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Width}">
+                            <WrapPanel>
+                                <TextBlock Style="{DynamicResource FontAwesome}" FontSize="22px" Text="{TemplateBinding ToolTip}" Margin="2,0,4,0" VerticalAlignment="Center" x:Name="icon"></TextBlock>
+                                <TextBlock   x:Name="txt" 
+                           TextDecorations="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ContentDecorations}" 
+                                               Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Content}" 
+                                               FontSize="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=FontSize}" 
+                                               Foreground="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Foreground}"
+                                               VerticalAlignment="Center"
+                                             Margin="0,0,4,0"></TextBlock>
+                            </WrapPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="WhiteSmoke"/>
+                    <Setter Property="Foreground" Value="DarkBlue"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="2" Background="#FFE6F2F3">
+            <StackPanel  Background="#FF007ACC">
+                <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
+                    <Button  Tag="Open" Click="Button_Click" Margin="10,0,0,0" Style="{StaticResource stlButton}" ToolTip="&#xf07c;"  Content="装载" FontSize="14"/>
+                    <Button Tag="start" Click="Button_Click" ToolTip="&#xf04b;" Style="{StaticResource stlButton}" FontSize="14" Background="red" >开始</Button>
+                    <Button Tag="stop" Click="Button_Click" ToolTip="&#xf04d;" Style="{StaticResource stlButton}" FontSize="14">停止</Button>
+                    <Button Tag="save" Click="Button_Click" ToolTip="&#xf0c7;" Style="{StaticResource stlButton}" FontSize="14">保存</Button>
+                </WrapPanel>
+            </StackPanel>
+        </DockPanel>
+        <StackPanel Margin="10" Grid.Row="1" Grid.Column="0">
+            <Label>智能学习区</Label>
+           
+            <WrapPanel Margin="10,20" >
+
+                <TextBlock>目标均方差</TextBlock>
+                <TextBox x:Name="TB_TargetE" Width="50">0.5</TextBox>
+            </WrapPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10" Grid.RowSpan="2">
+            <TextBlock Text="训练对象"/>
+            <local:UCCategory x:Name="UC_Category"></local:UCCategory>
+            <DataGrid Name="DG_TrainData" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="编号" Binding="{Binding SampleID}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="目标值" Binding="{Binding TargetData}"></DataGridTextColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="0" Margin="10">
+            <TextBlock>学习参数区</TextBlock>
+            <WrapPanel DataContext="Me">
+                <TextBlock>目前学习次数</TextBlock>
+                <TextBlock Text="{Binding Path=CurrentStudyTimes, Mode=OneWay}"></TextBlock>
+                <TextBlock>，均方差为 </TextBlock>
+                <TextBlock Text="{Binding Path=CurrentE,Mode=TwoWay}"></TextBlock>
+                <TextBlock Text="{Binding Path=CurrentE,Mode=OneWay}"></TextBlock>
+            </WrapPanel>
+            <TextBlock>学习进度</TextBlock>
+        </StackPanel>
+    </Grid>
+   
+</Window>

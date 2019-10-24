@@ -1,0 +1,65 @@
+﻿<Window x:Class="WinSampleGroupAddData1"
+     
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:App"
+        mc:Ignorable="d"
+        FontSize="14px"
+        Title="批量导入近红外数据" Height="750" Width="1000" Icon="images/coctail.ico"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="675*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Background="#FF007ACC" >
+            <WrapPanel HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Center"  x:Name="CurrentSamplePanel">               
+              
+                <Button Background="#FF797BB2" Foreground="White" Tag="Open" Click="Button_Click">
+                    <WrapPanel >
+                        <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="18px"  Foreground="#FFF5F3F3">&#xf002;</Label>
+                        <TextBlock  VerticalAlignment="Center" Margin="5,0">浏览</TextBlock>
+                    </WrapPanel>
+                </Button>
+                <Button Background="#FF74BF28" Foreground="White" Tag="Save" Click="Button_Click">
+                    <WrapPanel >
+                        <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="18px"  Foreground="#FFF5F3F3">&#xf0c7;</Label>
+                        <TextBlock  VerticalAlignment="Center" Margin="5,0">导入</TextBlock>
+                    </WrapPanel>
+                </Button>
+                <Button Background="#FF488AD8" Foreground="White" Tag="Open" Click="Button_Click" Margin="50,0,0,0">
+                    <WrapPanel >
+                        <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="18px"  Foreground="#FFF5F3F3">&#xf059;</Label>
+                        <TextBlock  VerticalAlignment="Center" Margin="5,0">帮助</TextBlock>
+                    </WrapPanel>
+                </Button>
+
+            </WrapPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Background="#FFE6F2F3" Orientation="Vertical" x:Name="SP_Progress" >            
+                <Label Margin="0,0,0,0" Foreground="#88000000" HorizontalAlignment="Center"  >
+                    <WrapPanel>
+                        <TextBlock Text="{Binding CurrentDataName}"></TextBlock>
+                        <TextBlock>第</TextBlock>
+                        <TextBlock Text="{Binding CurrentDataFileIndex}"></TextBlock>
+                        <TextBlock>/</TextBlock>
+                        <TextBlock Text="{Binding CurrentDataFilesCount}"></TextBlock>
+                        <TextBlock>个 </TextBlock>
+                    </WrapPanel>
+                </Label>             
+                <ProgressBar Height="20" Background="#FFE6F2F3"  Margin="10,0,10,10"   Maximum="{Binding CurrentDataFilesCount}" x:Name="PB_main" /> 
+        </StackPanel>
+
+        <TextBox Grid.Row="2" MinHeight="300" Margin="10" Text="{Binding stateMessage}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        </TextBox>
+
+
+    </Grid>
+
+
+
+</Window>
