@@ -60,7 +60,7 @@
                     </MenuItem.Header>                       
                         <MenuItem Header="数据批量导入"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="Group"/>
                         <MenuItem Header="数据浏览"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="Sample"/>
-                        <MenuItem Header="分类"  Style="{StaticResource MgtSubMenuItem}"/>
+                        <MenuItem Header="新增数据"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="Add"/>
                     </MenuItem>
                 <MenuItem  InputGestureText="Ctrl+W" Style="{StaticResource MgtMenuItem}" Click="MenuItem_Click" Tag="Category">
                     <MenuItem.Header>
@@ -79,7 +79,7 @@
                             <Label Foreground="#FFF5F3F3" FontSize="14px">计算设置</Label>
                         </StackPanel>
                     </MenuItem.Header>
-                    <MenuItem Style="{StaticResource MgtSubMenuItem}" Header="BP数据训练" Click="MenuItem_Click" Tag="Train"/>
+                    <MenuItem Style="{StaticResource MgtSubMenuItem}" Header="数据训练" Click="MenuItem_Click" Tag="Train"/>
                     </MenuItem>
                 <MenuItem  Click="MenuItem_Click" InputGestureText="Ctrl+O" Tag="Config" Style="{StaticResource MgtMenuItem}">
                     <MenuItem.Header>

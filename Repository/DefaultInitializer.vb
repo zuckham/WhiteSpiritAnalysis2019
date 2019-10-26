@@ -29,8 +29,17 @@ Public Class DefaultInitializer
         context.SaveChanges()
 
         '增加初始类别
-        Dim cata As New CategoryInfo With {.Name = "白酒类型1"， .ParentID = 0, .Order = 1, .IsContainer = True, .Description = "自动创建"}
+        Dim cata As New CategoryInfo With {.Name = "感官评级"， .ParentID = 0, .Order = 1, .IsContainer = True, .Description = "自动创建"}
+
+        Dim cata1 As New CategoryInfo With {.Name = "特级"， .ParentID = 1, .Order = 1, .IsContainer = False, .Description = "自动创建"}
+        Dim cata2 As New CategoryInfo With {.Name = "优级"， .ParentID = 1, .Order = 2, .IsContainer = False, .Description = "自动创建"}
+        Dim cata3 As New CategoryInfo With {.Name = "一级"， .ParentID = 1, .Order = 3, .IsContainer = False, .Description = "自动创建"}
+        Dim cata4 As New CategoryInfo With {.Name = "二级"， .ParentID = 1, .Order = 4, .IsContainer = False, .Description = "自动创建"}
         context.Categories.Add(cata)
+        context.Categories.Add(cata1)
+        context.Categories.Add(cata2)
+        context.Categories.Add(cata3)
+        context.Categories.Add(cata4)
         context.SaveChanges()
 
     End Sub

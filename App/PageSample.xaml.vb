@@ -12,21 +12,16 @@ Partial Class PageSample
         LoadSamples()
     End Sub
     Private Shared Pager As New PagerInfo
-    Private selectSampleViewModel As SampleViewModel
+    Private IDlist As List(Of Integer) = sampleCateService.FindList(Function(s) True, "ID", False).Select(Of Integer)(Function(s) s.SampleID).Distinct.ToList
     Private Shared service As New SampleService
     Private Shared sampleCateService As New SampleCategoryService
     Private Sub LoadSamples()
-        Dim q As IQueryable(Of SampleInfo)
-        Dim IDlist As List(Of Integer)
-        IDlist = sampleCateService.FindList(Function(s) True, "ID", False).Select(Of Integer)(Function(s) s.SampleID).Distinct.ToList
-
-        If String.IsNullOrEmpty(TB_Code.Text) Then
-            q = service.FindPageList(Pager.CurrentPage, Pager.PageSize, Pager.TotalRecords, Function(s) Not IDlist.Contains(s.ID), "ID", False)
-        Else
-            q = service.FindPageList(Pager.CurrentPage, Pager.PageSize, Pager.TotalRecords, Function(s) s.Code.Contains(TB_Code.Text) And Not IDlist.Contains(s.ID), "ID", False)
+        Dim keyword As String = ""
+        Dim IsExact As Boolean = CB_IsExact.IsChecked
+        If Not String.IsNullOrWhiteSpace(TB_Code.Text) Then
+            keyword = TB_Code.Text
         End If
-
-        DG_Samples.ItemsSource = SampleViewModel.Trans(q.ToList)
+        DG_Samples.ItemsSource = SampleViewModel.Search(keyword, Pager, IsExact)
         TB_Page.Text = Pager.CurrentPage
         TB_PageShow.Text = Pager.PageNavStr
         TB_PageShow2.Text = String.Format("查询结果 ：共有{0}页，{1}个样本数据。"， Pager.TotalPage, Pager.TotalRecords)
@@ -53,56 +48,46 @@ Partial Class PageSample
     End Sub
     Private Sub Command_Click(sender As Object, e As RoutedEventArgs)
         Dim bt As Button = sender
+
         Select Case bt.Tag
             Case "Add"
-                Grid_Single.Visibility = Visibility.Visible
-                BT_EditConfirm.Visibility = Visibility.Hidden
-                BT_AddConfirm.Visibility = Visibility.Visible
-                TB_SingleID.Text = ""
-                TB_SingleCode.Text = ""
-                TB_Single_Date.Text = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
-                TB_Single_Description.Text = ""
-            Case "AddConfirm"
+                Dim win As New WinAddSample
+                win.DataContext = win
+                win.ShowDialog()
+            Case "Del"
+                If IsNothing(DG_Samples.SelectedItem) Then Exit Sub
+                If MsgBox("操作将会删除样本及所有测试数据，是否继续", MsgBoxStyle.YesNo, "样本数据") = MsgBoxResult.Yes Then
+                    If service.Delete(DG_Samples.SelectedItem.Sample) Then
+                        MsgBox("删除成功！")
+                    End If
+                End If
+            Case "Edit"
+                If MsgBox("操作将会修改样本数据，是否继续", MsgBoxStyle.YesNo, "样本数据") = MsgBoxResult.No Then Exit Sub
+                If IsNothing(DG_Samples.SelectedItem) Then Exit Sub
+                Dim currentSample As SampleInfo = Grid_Single.DataContext
                 If String.IsNullOrEmpty(TB_SingleCode.Text) Then
                     TB_SingleCode.Focus()
                     MsgBox("请输入编号！")
                     Exit Sub
                 Else
-                    Dim sample As New SampleInfo With {.Code = TB_SingleCode.Text, .Description = TB_Single_Description.Text, .CreatedDate = TB_Single_Date.Text}
-                    '验证是否冲否Code
-                    If service.Exist(Function(s) s.Code = sample.Code) Then
-                        MsgBox("重复编号，请更改！")
-                        TB_SingleCode.Focus()
-                    Else
-                        service.Add(sample)
-                        LoadSamples()
-                    End If
+                    Try
+                        currentSample.Code = TB_SingleCode.Text
+                        currentSample.CreatedDate = TB_SingleDate.Text
+                        currentSample.Description = TB_Single_Description.Text
+                        currentSample.acohol = TB_SingleAcohol.Text
+                        currentSample.Enterprise = TB_SingleEnterprise.Text
+                        currentSample.Name = TB_SingleName.Text
+                        currentSample.SourceLevel = TB_SingleSourceLevel.Text
+                        currentSample.StoredYear = TB_SingleStoredYear.Text
+                        service.Update(currentSample)
 
+                        MsgBox("修改成功！")
+                    Catch ex As Exception
+                        MsgBox(“数据格式不规范  ” & ex.Message)
+                    End Try
                 End If
-
-
-            Case "EditConfirm"
-                If String.IsNullOrEmpty(TB_SingleCode.Text) Then
-                    TB_SingleCode.Focus()
-                    MsgBox("请输入编号！")
-                    Exit Sub
-                Else
-                    If service.Exist(Function(s) s.Code = TB_Code.Text) Then
-                        MsgBox("重复编号，请更改！")
-                        TB_SingleCode.Focus()
-                    Else
-                        selectSampleViewModel.Sample.Code = TB_SingleCode.Text
-                        selectSampleViewModel.Sample.CreatedDate = TB_Single_Date.Text
-                        selectSampleViewModel.Sample.Description = TB_Single_Description.Text
-                        service.Update(selectSampleViewModel.Sample)
-                        LoadSamples()
-                    End If
-
-                End If
-
-
         End Select
-
+        LoadSamples()
     End Sub
     Private Sub Item_Click(sender As Object, e As RoutedEventArgs)
         Dim bt As Button = sender
@@ -113,43 +98,30 @@ Partial Class PageSample
             '    WinAdd.Show()
 
             Case "detail"
-                Dim Item As SampleInfo = bt.CommandParameter
-                Dim winDetail As New WinDetail(Item)
+                Dim sampleID As Integer = bt.CommandParameter
+                Dim winDetail As New WinDetail(sampleID)
                 winDetail.ShowDialog()
-                'Dim main As MainWindow = Me.Parent
-                'main.MainFrame.Navigate(page)
-                'main.Show()
             Case "Category"
                 Dim viewmodel = DG_Samples.SelectedItem
                 Dim WinCate As New WinSample(viewmodel)
-                WinCate.Show()
+                WinCate.ShowDialog()
+            Case "BPCategory"
+                Dim viewmodel = DG_Samples.SelectedItem
+                Dim WinCate As New WinBPCate(viewmodel)
+                WinCate.ShowDialog()
             Case "GroupCategory"
                 Dim targets As List(Of SampleViewModel) = DirectCast(DG_Samples.ItemsSource, List(Of SampleViewModel)).Where(Function(s) s.IsChecked = True).ToList
                 Dim WinCate As New WinGroupCate(targets)
-                WinCate.show
-        End Select
-    End Sub
-
-    Private Sub RightMenu_Click(Sender As Object, e As RoutedEventArgs)
-        If IsNothing(DG_Samples.SelectedItem) Then Exit Sub
-        selectSampleViewModel = DG_Samples.SelectedItem
-        Dim mi As MenuItem = Sender
-        Select Case mi.Tag
-            Case "Edit"
-
-                Grid_Single.Visibility = Visibility.Visible
-                BT_EditConfirm.Visibility = Visibility.Visible
-                BT_AddConfirm.Visibility = Visibility.Hidden
-                TB_SingleID.Text = selectSampleViewModel.Sample.ID
-                TB_SingleCode.Text = selectSampleViewModel.Sample.Code
-                TB_Single_Date.Text = selectSampleViewModel.Sample.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")
-                TB_Single_Description.Text = selectSampleViewModel.Sample.Description
-            Case "Delete"
-                If MsgBox("删除样本将会删除样本所有的数据、分类信息，是否继续"， MsgBoxStyle.YesNo, "样本操作") = MsgBoxResult.Yes Then
-                    service.Delete(selectSampleViewModel.Sample)
+                WinCate.ShowDialog()
+            Case "GroupDel"
+                If MsgBox("操作将会删除选定样本以及样本的所有测试数据，是否继续", MsgBoxStyle.YesNo, "样本数据") = MsgBoxResult.Yes Then
+                    Dim targets As List(Of SampleViewModel) = DirectCast(DG_Samples.ItemsSource, List(Of SampleViewModel)).Where(Function(s) s.IsChecked = True).ToList
+                    For Each item In targets
+                        Dim sample = service.Read(item.ID)
+                        service.Delete(sample)
+                    Next
                     LoadSamples()
                 End If
-
         End Select
     End Sub
 
@@ -158,5 +130,13 @@ Partial Class PageSample
         For Each item As SampleViewModel In DG_Samples.ItemsSource
             item.IsChecked = Not item.IsChecked
         Next
+    End Sub
+
+    Private Sub DG_Samples_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles DG_Samples.SelectionChanged
+        Dim t As SampleViewModel = DG_Samples.SelectedItem
+        Try
+            Grid_Single.DataContext = service.Read(t.ID)
+        Catch ex As Exception
+        End Try
     End Sub
 End Class

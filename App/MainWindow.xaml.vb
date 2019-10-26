@@ -28,6 +28,10 @@ Public Class MainWindow
                     End If
                 End If
                 MainFrame.Navigate(New Uri("PageSample.xaml", UriKind.Relative)）
+            Case "Add"
+                Dim win As New WinAddSample
+                win.DataContext = win
+                win.ShowDialog()
             Case "Category"
                 If CurrentLogin.IsLogined Then
                     If UserService.CheckRight(Models.Right.基酒样品列表, CurrentLogin.CurrentUserRoles) Then
@@ -75,19 +79,20 @@ Public Class MainWindow
                 End If
             Case "Database"
                 MainFrame.Navigate(New Uri("PageDatabase.xaml", UriKind.Relative)）
-            Case "Group1"
-                Dim win As New WinSampleGroupAddData1
-                win.CurrentDataFilesCount = 0
-                win.DataContext = win
-                win.ShowDialog()
+
             Case "Group"
                 Dim win As New WinSampleGroupAddData
                 win.DataContext = win
                 win.ShowDialog()
             Case "Train"
-                Dim win As New WinTrain
-                win.DataContext = win
-                win.ShowDialog()
+                If CurrentLogin.IsLogined Then
+                    If Service.UserService.CheckRight(Models.Right.人员角色管理, CurrentLogin.CurrentUserRoles) Then
+                        MainFrame.Navigate(New Uri("PageTrain.xaml", UriKind.Relative)）
+                    Else
+                        Dim page As New PageError(0)
+                        MainFrame.Navigate(page）
+                    End If
+                End If
 
         End Select
     End Sub

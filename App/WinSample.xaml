@@ -4,23 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:App"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="WinSample" Height="750" Width="1000" FontSize="14px"
         Icon="images/coctail.ico">
     <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="MinWidth" Value="100"/>
-            <Setter Property="Background" Value="{x:Null}"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="style/DictDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
 
-        </Style>
     </Window.Resources>
     <Grid Background="#FFF0F2F5">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="6*"/>
+            <RowDefinition Height="7*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
@@ -31,12 +31,12 @@
                     <Setter Property="Foreground" Value="WhiteSmoke"></Setter>
                     <Setter Property="VerticalAlignment" Value="Center"></Setter>
                     <Setter Property="Background" Value="{x:Null}"></Setter>
-                  </Style>
-                
-                    <Style  TargetType="DataGridColumnHeader">
-                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                        <Setter Property="Background" Value="Black" />
-                        <Setter Property="Foreground" Value="White" />   
+                </Style>
+
+                <Style  TargetType="DataGridColumnHeader">
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                    <Setter Property="Background" Value="Black" />
+                    <Setter Property="Foreground" Value="White" />
                 </Style>
             </StackPanel.Resources>
             <Label  Foreground="#FFF5F3F3" VerticalAlignment="Center">当前样品信息</Label>
@@ -60,7 +60,7 @@
         </StackPanel>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>                
+                <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="260"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <TabControl   Margin="30,0,30,30" Background="#FFFFFFFF"  x:Name="TC_Main" Grid.Column="0">
@@ -71,89 +71,44 @@
                 </TabItem>
                 <TabItem Header="计算类别" HorizontalAlignment="Center">
                     <Grid >
+                        
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="230"></RowDefinition>
-                            <RowDefinition Height="3*"></RowDefinition>
+                            <RowDefinition Height="70"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <Button Click="Calc_Click" HorizontalAlignment="Left" Background="Green" Foreground="WhiteSmoke" VerticalAlignment="Top" Margin="20" Tag="Calculate" x:Name="BT_Calc">                                   
+                        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                            <Button Click="Calc_Click" HorizontalAlignment="Left" Background="Green" Foreground="WhiteSmoke" VerticalAlignment="Top" Margin="10,10,10,0" Tag="Calculate" x:Name="BT_Calc">
                                 <WrapPanel>
-                                    <Label Style="{StaticResource FontAwesome}" FontSize="18" Foreground="WhiteSmoke">&#xf04b;</Label>
-                                    <TextBlock VerticalAlignment="Center" Margin="10,0">计算</TextBlock>
+                                    <Label Style="{StaticResource FontAwesome}" FontSize="18" Foreground="WhiteSmoke" VerticalAlignment="Center">&#xf04b;</Label>
+                                    <TextBlock VerticalAlignment="Center" Margin="5,0">开始计算</TextBlock>      
                                 </WrapPanel>
                             </Button>
-                            <ProgressBar x:Name="SP_Progress" Height="40" Background="#FFF0F9F6" >                                
-                            </ProgressBar>                           
-                        </StackPanel>
-                        <Label Height="26" VerticalAlignment="Bottom" >计算结果</Label>
-                        <DataGrid x:Name="DG_Results" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FF4168A0" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" Grid.Row="1">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="目标类别" Binding="{Binding CategoryName}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="目标样本" Binding="{Binding TargetSampleCode}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="光谱MAE" Binding="{Binding SpectroMAE}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="光谱MSE" Binding="{Binding SpectroMSE}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="光谱SIM" Binding="{Binding SpectroSIM}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="色谱MAE" Binding="{Binding ChromatoMAE}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="色谱MSE" Binding="{Binding ChromatoMSE}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="色谱SIM" Binding="{Binding ChromatoSIM}"></DataGridTextColumn>
-                            </DataGrid.Columns>
+                            <ProgressBar x:Name="SP_Progress" Height="40" Background="#FFF0F9F6" MinWidth="400" />
+                            <ComboBox x:Name="CB_SourceFileType" Height="40" MinWidth="80"></ComboBox>
 
-                        </DataGrid>
+                        </StackPanel>
+                        <lvc:CartesianChart Series="{Binding SeriesCollection}"  Grid.Row="1" Grid.ColumnSpan="2" x:Name="cartesianChart1"/>
                     </Grid>
                 </TabItem>
-                <TabItem Header="计算分析">
-                    <StackPanel>
-                        <WrapPanel>
-                            <TextBlock Width="90" HorizontalAlignment="Right" VerticalAlignment="Center">合并方法：</TextBlock>
-                            <ComboBox Width="200" BorderThickness="0" Background="{x:Null}" x:Name="CB_Method">
-                                <ComboBoxItem  IsSelected="True">求和</ComboBoxItem>
-                                <ComboBoxItem>平均</ComboBoxItem>
-                            </ComboBox>
-                        </WrapPanel>
-                        <WrapPanel>
-                            <TextBlock Width="90" HorizontalAlignment="Right" VerticalAlignment="Center">计算指标：</TextBlock>
-                            <ComboBox Width="200" BorderThickness="0" Background="{x:Null}"  x:Name="CB_Factor">
-                                <ComboBoxItem  IsSelected="True">MAE</ComboBoxItem>
-                                <ComboBoxItem>MSE</ComboBoxItem>
-                                <ComboBoxItem>SIM</ComboBoxItem>
-                            </ComboBox>
-                        </WrapPanel>
-                        <WrapPanel>
-                            <TextBlock Width="90" VerticalAlignment="Center">分析数据源：</TextBlock>
-                            <ComboBox Width="200" BorderThickness="0" Background="{x:Null}" x:Name="CB_Source">
-                                <ComboBoxItem  IsSelected="True">近红外</ComboBoxItem>
-                                <ComboBoxItem>色谱</ComboBoxItem>                                
-                            </ComboBox>
-                            <Button Click="Calc_Click" Background="Green" Foreground="WhiteSmoke"  Height="30" Margin="40,0,0,0" Tag="Group" x:Name="BT_Group">
+                <TabItem Header="BP研判" HorizontalAlignment="Center">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0">
+                            <Button Click="Calc_Click" HorizontalAlignment="Left" Background="#196BA2" Foreground="WhiteSmoke" VerticalAlignment="Top" Margin="10,10,10,0" Tag="BP" x:Name="BT_BP">
                             <WrapPanel>
-                                <Label Style="{StaticResource FontAwesome}" FontSize="18" Foreground="WhiteSmoke">&#xf04b;</Label>
-                                <TextBlock VerticalAlignment="Center" Margin="10,0">计算</TextBlock>
+                                <Label Style="{StaticResource FontAwesome}" FontSize="18" Foreground="WhiteSmoke" VerticalAlignment="Center">&#xf04b;</Label>
+                                <TextBlock VerticalAlignment="Center" Margin="5,0">开始计算</TextBlock>
                             </WrapPanel>
-                        </Button>
-                        </WrapPanel>
-                        <DataGrid x:Name="DG_Group" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HorizontalGridLinesBrush="#FF4082B7" VerticalGridLinesBrush="#FF4082B7">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="类目ID" Binding="{Binding CategoryID}"/>
-                                <DataGridTextColumn Header="类目" Binding="{Binding CategoryName}"/>
-                                <DataGridTextColumn  Binding="{Binding Value,StringFormat={}{0:N4}}" >
-                                    <DataGridTextColumn.Header>
-                                        <TextBlock Text="{Binding  ElementName=CB_Factor, Path=Text}"></TextBlock>
-                                    </DataGridTextColumn.Header>
-                                    </DataGridTextColumn>
-
-
-                            </DataGrid.Columns>
-                            
-                        </DataGrid>
-                        
-                        
-
+                        </Button>                       
                     </StackPanel>
-                    
-                    
+                    <lvc:CartesianChart Series="{Binding SeriesCollection}"   x:Name="cartesianChart2" Grid.Row="1"/>
+                    </Grid>
                 </TabItem>
             </TabControl>
-         
             <ListBox x:Name="LB_Selected" Margin="0,0,20,30" Grid.Column="1">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -164,12 +119,9 @@
 
                 </ListBox.ItemTemplate>
             </ListBox>
-
         </Grid>
-
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Label x:Name="LB_CurrentSelected" VerticalAlignment="Center">当前选择</Label>
-
             <Button  Tag="Add" Click="Button_Click" Margin="30,0" Background="#FF797BB2">
                 <WrapPanel  HorizontalAlignment="Center"   >
                     <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="20px"   Foreground="#FFF5F3F3">&#xf067;</Label>

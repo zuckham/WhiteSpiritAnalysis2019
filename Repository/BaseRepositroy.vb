@@ -120,7 +120,7 @@ Public MustInherit Class BaseRepository(Of T As Class)
     Public Function BulkInsert(entites As List(Of T)) As Boolean
         Try
             db.BulkInsert(entites)
-
+            db.SaveChanges()
             Return True
         Catch ex As Exception
             Return False
@@ -138,12 +138,10 @@ End Class
 Public Class SampleRepository
     Inherits BaseRepository(Of SampleInfo)
 End Class
-
 Public Class ChromatographRepository
     Inherits BaseRepository(Of ChromatographInfo)
 
 End Class
-
 Public Class ChromatographNameRepository
     Inherits BaseRepository(Of ChromatographNameInfo)
 End Class
@@ -153,34 +151,93 @@ End Class
 Public Class SpectrographRepository
     Inherits BaseRepository(Of SpectrographInfo)
 End Class
-
 Public Class NMRRepository
     Inherits BaseRepository(Of NMRInfo)
 End Class
-
 Public Class CategoryRepository
     Inherits BaseRepository(Of CategoryInfo)
 End Class
-
 Public Class SampleCategoryRepository
     Inherits BaseRepository(Of SampleCategoryInfo)
 End Class
-
 Public Class UserRepository
     Inherits BaseRepository(Of UserInfo)
 End Class
-
 Public Class RoleRepository
     Inherits BaseRepository(Of RoleInfo)
 End Class
-
 Public Class UserRoleRepository
     Inherits BaseRepository(Of UserRoleInfo)
 
 End Class
-
 Public Class RecordRepository
     Inherits BaseRepository(Of RecordInfo)
+End Class
+
+Public Class SampleViewRepository
+    Protected Shared db As DefaultContext = ContextFactory.GetCurrentContext
+    Function FindPageList(pageIndex As Integer, pagesize As Integer, ByRef totoalRecord As Integer, wherelambda As Expression(Of Func(Of SampleViewInfo, Boolean)), OrderName As String, isASC As Boolean)
+        Dim q As IQueryable(Of SampleViewInfo) = From s In db.Samples
+                                                 Select New SampleViewInfo With {
+                                                     .ID = s.ID,
+                                                     .Name = s.Name,
+                                                     .IsBase = s.IsBase,
+                                                     .IsSample = s.IsSample,
+                                                     .Code = s.Code,
+                                                     .CreatedDate = s.CreatedDate,
+                                                     .ChroamtographCount = (From c In db.ChromatographChildren Where c.SampleID = s.ID).Count,
+                                                     .NmrCount = (From c In db.NMRs Where c.SampleID = s.ID).Count,
+                                                     .SpectrographCount = (From c In db.Spectrographs Where c.SampleID = s.ID).Count}
+        q = q.Where(wherelambda)
+        totoalRecord = q.Count
+        Return OrderBy(q, OrderName, isASC).Skip((pageIndex - 1) * pagesize).Take(pagesize)
+    End Function
+    Function FindList(whereLambda As Expression(Of Func(Of SampleViewInfo, Boolean)), OrderName As String, isASC As Boolean)
+        Dim q As IQueryable(Of SampleViewInfo) = From s In db.Samples
+                                                 Select New SampleViewInfo With {
+                                                     .ID = s.ID,
+                                                     .Name = s.Name,
+                                                     .IsBase = s.IsBase,
+                                                     .IsSample = s.IsSample,
+                                                     .Code = s.Code,
+                                                     .CreatedDate = s.CreatedDate,
+                                                     .ChroamtographCount = (From c In db.ChromatographChildren Where c.SampleID = s.ID).Count,
+                                                     .NmrCount = (From c In db.NMRs Where c.SampleID = s.ID).Count,
+                                                     .SpectrographCount = (From c In db.Spectrographs Where c.SampleID = s.ID).Count}
+        q = q.Where(whereLambda)
+        Return OrderBy(q, OrderName, isASC)
+    End Function
+
+    Public Function Read(ID As Integer) As SampleViewInfo
+        Dim q As IQueryable(Of SampleViewInfo) = From s In db.Samples
+                                                 Select New SampleViewInfo With {
+                                                     .ID = s.ID,
+                                                     .Name = s.Name,
+                                                     .IsBase = s.IsBase,
+                                                     .IsSample = s.IsSample,
+                                                     .Code = s.Code,
+                                                     .CreatedDate = s.CreatedDate,
+                                                     .ChroamtographCount = (From c In db.ChromatographChildren Where c.SampleID = s.ID).Count,
+                                                     .NmrCount = (From c In db.NMRs Where c.SampleID = s.ID).Count,
+                                                     .SpectrographCount = (From c In db.Spectrographs Where c.SampleID = s.ID).Count}
+        Return q.First(Function(s) s.ID = ID)
+    End Function
+    Protected Function OrderBy(Source As IQueryable(Of SampleViewInfo), propertyName As String, isAsc As Boolean) As IQueryable(Of SampleViewInfo)
+
+        If Source Is Nothing Then Throw New ArgumentNullException("source", "不能为空")
+        If String.IsNullOrEmpty(propertyName) Then Return Source
+        Dim _parameter = Expression.Parameter(Source.ElementType)
+        Dim _property = Expression.Property(_parameter, propertyName)
+        If _parameter Is Nothing Then Throw New ArgumentNullException(propertyName, "属性不存在")
+        Dim _lambda = Expression.Lambda(_property, _parameter)
+        Dim _methodName As String = IIf(isAsc, "OrderBy", "OrderByDescending")
+
+        'Dim _resultExpression = Expression.Call(Of Queryable, _methodName, New Type(Source.ElementType, _property.Type), Source.Expression, Expression.Quote(_lambda))
+        Dim _resultExpression = Expression.Call(GetType(Queryable), _methodName, New Type() {Source.ElementType, _property.Type}, Source.Expression, Expression.Quote(_lambda))
+        Return Source.Provider.CreateQuery(Of SampleViewInfo)(_resultExpression)
+
+
+    End Function
 End Class
 
 

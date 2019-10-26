@@ -4,17 +4,25 @@ Imports Service
 Public Class CalculatedViewModel
 
     Property TargetSampleID As Integer
-
     Property TargetSampleCode As String
-    Property SpectroMSE As Decimal
-    Property SpectroMAE As Decimal
-    Property SpectroSIM As Decimal
-    Property ChromatoMSE As Decimal
-    Property ChromatoMAE As Decimal
-    Property ChromatoSIM As Decimal
     Property CategoryID As Integer
     Property CategoryName As String
+    Property SpectroMSE As Decimal
 
+    Property SpectroMAE As Decimal
+
+    Property SpectroSIM As Decimal
+
+    Property ChromatoMSE As Decimal
+
+    Property ChromatoMAE As Decimal
+
+    Property ChromatoSIM As Decimal
+    Property NMRMSE As Decimal
+
+    Property NMRMAE As Decimal
+
+    Property NMRSIM As Decimal
 
 
 End Class
@@ -23,7 +31,84 @@ Public Class CalculatedGroupViewModel
 
     Property CategoryID As Integer
     Property CategoryName As String
-    Property Value As Decimal
+    Property MseValue As Decimal
+    Property MaeValue As Decimal
+    Property SimValue As Decimal
+    Property dataType As AnalysisInfoType
+    'Property BPValue As Boolean
+
+    Public Shared Function Group(_list As List(Of CalculatedViewModel)) As List(Of CalculatedGroupViewModel)
+        Dim Outlist As New List(Of CalculatedGroupViewModel)
+        Dim q As IEnumerable(Of CalculatedGroupViewModel)
+
+        For Each _dataType As AnalysisInfoType In System.Enum.GetValues(GetType(AnalysisInfoType))
+            Select Case _dataType
+                Case AnalysisInfoType.色谱数据
+                    q = From s In _list Group s By Key = New With {Key s.CategoryID, Key s.CategoryName} Into g = Group
+                        Select New CalculatedGroupViewModel With {.CategoryID = Key.CategoryID, .dataType = _dataType,
+                                .CategoryName = Key.CategoryName,
+                                .MaeValue = g.Average(Function(j) j.ChromatoMAE),
+                                .MseValue = g.Average(Function(j) j.ChromatoMSE),
+                                .SimValue = g.Average(Function(j) j.ChromatoSIM)}
+                Case AnalysisInfoType.近红外数据
+                    q = From s In _list Group s By Key = New With {Key s.CategoryID, Key s.CategoryName} Into g = Group
+                        Select New CalculatedGroupViewModel With {.CategoryID = Key.CategoryID, .dataType = _dataType,
+                                .CategoryName = Key.CategoryName,
+                                .MaeValue = g.Average(Function(j) j.SpectroMAE),
+                                .MseValue = g.Average(Function(j) j.SpectroMSE),
+                                .SimValue = g.Average(Function(j) j.SpectroSIM)}
+                Case AnalysisInfoType.核磁共振数据
+                    q = From s In _list Group s By Key = New With {Key s.CategoryID, Key s.CategoryName} Into g = Group
+                        Select New CalculatedGroupViewModel With {.CategoryID = Key.CategoryID, .dataType = _dataType,
+                                .CategoryName = Key.CategoryName,
+                                .MaeValue = g.Average(Function(j) j.NMRMAE),
+                                .MseValue = g.Average(Function(j) j.NMRMSE),
+                                .SimValue = g.Average(Function(j) j.NMRSIM)}
+            End Select
+            If Not IsNothing(q) OrElse q.Count > 0 Then
+                Outlist.AddRange(q)
+            End If
+
+        Next
+        Return Outlist
+    End Function
+    Public Shared Function Group(_list As List(Of CalculatedViewModel), ByVal _dataType As AnalysisInfoType) As List(Of CalculatedGroupViewModel)
+        Dim q As IEnumerable(Of CalculatedGroupViewModel)
+        Select Case _dataType
+            Case AnalysisInfoType.色谱数据
+                q = From s In _list Group s By Key = New With {Key s.CategoryID, Key s.CategoryName} Into g = Group
+                    Select New CalculatedGroupViewModel With {.CategoryID = Key.CategoryID, .dataType = _dataType,
+                            .CategoryName = Key.CategoryName,
+                            .MaeValue = g.Average(Function(j) j.ChromatoMAE),
+                            .MseValue = g.Average(Function(j) j.ChromatoMSE),
+                            .SimValue = g.Average(Function(j) j.ChromatoSIM)}
+            Case AnalysisInfoType.近红外数据
+                q = From s In _list Group s By Key = New With {Key s.CategoryID, Key s.CategoryName} Into g = Group
+                    Select New CalculatedGroupViewModel With {.CategoryID = Key.CategoryID, .dataType = _dataType,
+                            .CategoryName = Key.CategoryName,
+                            .MaeValue = g.Average(Function(j) j.SpectroMAE),
+                            .MseValue = g.Average(Function(j) j.SpectroMSE),
+                            .SimValue = g.Average(Function(j) j.SpectroSIM)}
+            Case AnalysisInfoType.核磁共振数据
+                q = From s In _list Group s By Key = New With {Key s.CategoryID, Key s.CategoryName} Into g = Group
+                    Select New CalculatedGroupViewModel With {.CategoryID = Key.CategoryID, .dataType = _dataType,
+                            .CategoryName = Key.CategoryName,
+                            .MaeValue = g.Average(Function(j) j.NMRMAE),
+                            .MseValue = g.Average(Function(j) j.NMRMSE),
+                            .SimValue = g.Average(Function(j) j.NMRSIM)}
+        End Select
+
+
+        If IsNothing(q) OrElse q.Count = 0 Then
+            Return Nothing
+        Else
+            Return q.ToList
+        End If
+
+    End Function
+
+
+
 
 
     '分类汇总
@@ -33,32 +118,7 @@ Public Class CalculatedGroupViewModel
     'Value 表示汇总结果
     'factor  0 MSE 1 MAE 2 SIM
 
-    Public Shared Function Group(_list As List(Of CalculatedViewModel), source As Integer, method As Integer, factor As Integer) As List(Of CalculatedGroupViewModel)
-        Dim selector As Func(Of CalculatedViewModel, Decimal)
-        Dim q As IEnumerable(Of CalculatedGroupViewModel)
-        Select Case source * 10 + factor
-            Case 0
-                selector = Function(s) s.SpectroMSE
-            Case 1
-                selector = Function(s) s.SpectroMAE
-            Case 2
-                selector = Function(s) s.SpectroSIM
-            Case 10
-                selector = Function(s) s.ChromatoMSE
-            Case 11
-                selector = Function(s) s.ChromatoMAE
-            Case 12
-                selector = Function(s) s.ChromatoSIM
-            Case Else
-                Return Nothing
-        End Select
-        If method = 0 Then  '求和
-            q = From s In _list Group s By Key = New With {Key s.CategoryID, Key s.CategoryName} Into g = Group
-                Select New CalculatedGroupViewModel With {.CategoryID = Key.CategoryID, .CategoryName = Key.CategoryName, .Value = g.Sum(selector)}
-        Else
-            q = From s In _list Group s By Key = New With {Key s.CategoryID, Key s.CategoryName} Into g = Group
-                Select New CalculatedGroupViewModel With {.CategoryID = Key.CategoryID, .CategoryName = Key.CategoryName, .Value = g.Average(selector)}
-        End If
-        Return q.ToList
-    End Function
+
+
+    '我直接
 End Class

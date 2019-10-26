@@ -18,16 +18,18 @@
             <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Image HorizontalAlignment="Center"    Source="images/welcome.png" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="100,100,0,0" MaxHeight="300"/>
+        <Image HorizontalAlignment="Center"    Source="/images/welcome.png" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="100,100,0,0" MaxHeight="300" x:Name="IMG_1"/>
         <StackPanel Grid.Column="1" Grid.Row="0" >
             <StackPanel.Resources>
                 <Style TargetType="Label">
                     <Setter Property="Margin" Value="10,20,10,0"/>
                     <Setter Property="FontSize" Value="16px"></Setter>
-                    <Setter Property="Foreground" Value="#FF085E9A"></Setter>
-                    
+                    <Setter Property="Foreground" Value="#FF085E9A"></Setter>                    
                 </Style>
             </StackPanel.Resources>
+            <StackPanel.Background>
+                <ImageBrush ImageSource="/images/brand_bg01.png"/>
+            </StackPanel.Background>
             <Image Source="images/title.png" Margin="0,100,50,60" MaxHeight="36" HorizontalAlignment="Left"></Image>
             <Label MouseDoubleClick="Label_MouseDoubleClick" Tag="Samples">
                 <WrapPanel>
@@ -63,8 +65,11 @@
                 <Button Background="Green" Foreground="WhiteSmoke" Click="Button_Click">
                     <TextBlock Margin="10,3">登录</TextBlock></Button>
             </WrapPanel>
-            <TextBlock HorizontalAlignment="Center"  Foreground="#FFBAADAD" >四川理工学院</TextBlock>
-            <TextBlock HorizontalAlignment="Center" Margin="0,0,0,20"   Foreground="#FFBAADAD" >2018</TextBlock>
+            <WrapPanel HorizontalAlignment="Center">
+                <Image Source="/images/lzlj.png" Height="30" Margin="0,0,42,0"/>
+                <Image Source="/images/suse.png" Height="30"/>
+            </WrapPanel>            
+            <TextBlock HorizontalAlignment="Center" Margin="0,0,0,20"   Foreground="#FFBAADAD" >Version 2.0</TextBlock>
         </StackPanel>
     </Grid>
 </Page>

@@ -30,7 +30,7 @@ Public Class WinGroupCate
             Case "OK"
                 For Each sample In samples
                     For Each note In selectedNodes
-                        Dim samplecate As New SampleCategoryInfo With {.CategoryID = note.ID, .SampleID = sample.Sample.ID}
+                        Dim samplecate As New SampleCategoryInfo With {.CategoryID = note.ID, .SampleID = sample.ID}
                         sampleCateService.Add(samplecate)
                     Next
                 Next

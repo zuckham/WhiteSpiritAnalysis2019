@@ -41,6 +41,29 @@ Public Class BpANNet
     Sub New()
 
     End Sub
+
+    Public Sub init()
+        ReDim x(inNum - 1)
+        ReDim x1(hideNum - 1)
+        ReDim x2(outNum - 1)
+
+        ReDim o1(hideNum - 1)
+        ReDim o2(outNum - 1)
+
+        ReDim w(inNum - 1, hideNum - 1)
+        ReDim v(hideNum - 1, outNum - 1)
+        ReDim dw(inNum - 1, hideNum - 1)
+        ReDim dv(hideNum - 1, outNum - 1)
+
+        ReDim b1(hideNum - 1)
+        ReDim b2(outNum - 1)
+        ReDim db1(hideNum - 1)
+        ReDim db2(outNum - 1)
+
+        ReDim pp(hideNum - 1)
+        ReDim qq(outNum - 1)
+        ReDim yd(outNum - 1)
+    End Sub
     Sub New(ByVal p As Double(,), ByVal t As Double(,))
         r = New Random(32) '加了一个参数，使产生的伪随机序列相同
         inNum = p.GetLength(1) '数组第二维大小为 输入节点数
@@ -48,26 +71,26 @@ Public Class BpANNet
         hideNum = computeHideNum(inNum, outNum)
         sampleNum = p.GetLength(0)
 
-        ReDim x(inNum)
-        ReDim x1(hideNum)
-        ReDim x2(outNum)
+        ReDim x(inNum - 1)
+        ReDim x1(hideNum - 1)
+        ReDim x2(outNum - 1)
 
-        ReDim o1(hideNum)
-        ReDim o2(outNum)
+        ReDim o1(hideNum - 1)
+        ReDim o2(outNum - 1)
 
-        ReDim w(inNum, hideNum)
-        ReDim v(hideNum, outNum)
-        ReDim dw(inNum, hideNum)
-        ReDim dv(hideNum, outNum)
+        ReDim w(inNum - 1, hideNum - 1)
+        ReDim v(hideNum - 1, outNum - 1)
+        ReDim dw(inNum - 1, hideNum - 1)
+        ReDim dv(hideNum - 1, outNum - 1)
 
-        ReDim b1(hideNum)
-        ReDim b2(outNum)
-        ReDim db1(hideNum)
-        ReDim db2(outNum)
+        ReDim b1(hideNum - 1)
+        ReDim b2(outNum - 1)
+        ReDim db1(hideNum - 1)
+        ReDim db2(outNum - 1)
 
-        ReDim pp(hideNum)
-        ReDim qq(outNum)
-        ReDim yd(outNum)
+        ReDim pp(hideNum - 1)
+        ReDim qq(outNum - 1)
+        ReDim yd(outNum - 1)
 
         '初始化W
         For i As Integer = 0 To inNum - 1
@@ -240,22 +263,22 @@ Public Class BpANNet
     End Sub
     '读取参数
     Public Sub readPraras(filename As String)
-        Dim sr As StringReader
-        Try
-            sr = New StringReader(filename)
+        Dim sr As StreamReader
+        'Try
+        sr = New StreamReader(filename)
             Dim line As String = sr.ReadLine
             If Not String.IsNullOrWhiteSpace(line) Then
                 Dim strArr = line.Split(" ")
                 inNum = Convert.ToInt32(strArr(0))
                 hideNum = Convert.ToInt32(strArr(1))
                 outNum = Convert.ToInt32(strArr(2))
-                in_rate = Convert.ToInt32(strArr(3))
-            End If
+            in_rate = Convert.ToDouble(strArr(3))
+        End If
             sr.Close()
             sr.Dispose()
-        Catch ex As Exception
-            Throw ex
-        End Try
+        'Catch ex As Exception
+        'Throw ex
+        'End Try
     End Sub
     '读取矩阵w,v
     Public Sub readMatrixW(w As Double(,), filename As String)
@@ -278,7 +301,7 @@ Public Class BpANNet
         End Try
     End Sub
     '读取矩阵b1,b2
-    Public Sub readMartrixB(b As Double(), filename As String)
+    Public Sub readMatrixB(b As Double(), filename As String)
         Dim sr As StreamReader
         Try
             sr = New StreamReader(filename)

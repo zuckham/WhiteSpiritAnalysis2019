@@ -46,6 +46,7 @@ Public Class WinSampleGroupAddData
         CurrentDataFiles.Clear()
         backworker = New BackgroundWorker
         backworker.WorkerReportsProgress = True
+        backworker.WorkerSupportsCancellation = True
         AddHandler backworker.DoWork, AddressOf Dowork_Handler
         AddHandler backworker.ProgressChanged, AddressOf ProgressChanged_Handler
         AddHandler backworker.RunWorkerCompleted, AddressOf RunWorkerCompleted_Handler
@@ -92,6 +93,10 @@ Public Class WinSampleGroupAddData
                 End If
 
             Case "Save"
+                If backworker.IsBusy Then
+                    MsgBox("后台正忙，请稍后再试！")
+                    Exit Select
+                End If
                 backworker.RunWorkerAsync()
                 '导入数据
 
@@ -133,13 +138,14 @@ Public Class WinSampleGroupAddData
         Else
             dt = ExcelService.ReadExcel(excelFile.FileName).Tables(0)
         End If
-        If IsNothing(dt) OrElse dt.Rows.Count > 0 Then
-            excelFile.IsImported = True
-            stateMessage += excelFile.ShortName & "读取成功。 "
-        Else
+        If IsNothing(dt) OrElse dt.Rows.Count < 1 Then
             excelFile.IsImported = False
             stateMessage += excelFile.ShortName & "读取失败。 "
             Exit Sub
+        Else
+            excelFile.IsImported = True
+            stateMessage += excelFile.ShortName & "读取成功。 "
+
         End If
         '读取excel文件文件到datatable dt---------------------------------------------------------
 
@@ -147,7 +153,7 @@ Public Class WinSampleGroupAddData
         '生成list-------------------------------------------------------------------------
         Dim createdDate As Date = Date.Now
         Select Case excelFile.FileType
-            Case 0 '色谱xlsx
+            Case AnalysisInfoType.色谱数据
                 Dim _ChidList As New List(Of ChromatographChildInfo)
                 '更新Name数据,并填充NameList
                 Dim _NameList As New List(Of ChromatographNameInfo)
@@ -186,7 +192,14 @@ Public Class WinSampleGroupAddData
                         Else
                             Dim P As String = dt.Rows(rowIndex).Item(0)
                             Dim PName = _NameList.First(Function(s) s.Name = P)
-                            _ChidList.Add(New ChromatographChildInfo With {.SampleID = currentSample.ID, .ChromatographNameID = PName.ID, .RT = dt.Rows(rowIndex)(colindex), .ChromatographID = currentChromato.ID})
+                            Dim testValue As Decimal
+
+                            Try
+                                testValue = IIf(IsDBNull(dt.Rows(rowIndex)(colindex)), 0, dt.Rows(rowIndex)(colindex))
+                            Catch ex As Exception
+                                testValue = 0
+                            End Try
+                            _ChidList.Add(New ChromatographChildInfo With {.SampleID = currentSample.ID, .ChromatographNameID = PName.ID, .RT = testValue, .ChromatographID = currentChromato.ID})
 
                         End If
                     Next
@@ -196,9 +209,7 @@ Public Class WinSampleGroupAddData
                 Else
                     stateMessage += "数据导入失败。" & vbNewLine
                 End If
-
-
-            Case 1 '近红外.csv
+            Case AnalysisInfoType.近红外数据
                 spectroService.Clear(sampleID)
                 stateMessage += "清理旧数据" & nmrServce.Clear(sampleID) & "条。"
                 Dim _list As New List(Of SpectrographInfo)
@@ -217,7 +228,7 @@ Public Class WinSampleGroupAddData
                     excelFile.IsImported = False
                     stateMessage += "数据导入失败。" & vbNewLine
                 End If
-            Case 2 '核磁.xlsx
+            Case AnalysisInfoType.核磁共振数据
                 stateMessage += excelFile.ShortName & "清理旧数据" & nmrServce.Clear(sampleID) & "条。"
                 Dim _list As New List(Of NMRInfo)
                 For rowindex As Integer = 1 To dt.Rows.Count - 1
@@ -226,13 +237,23 @@ Public Class WinSampleGroupAddData
                     item.Peak = dt.Rows(rowindex).Item(0)
                     item.Region = dt.Rows(rowindex).Item(1)
                     item.Type = dt.Rows(rowindex).Item(2)
-                    item.Index = dt.Rows(rowindex).Item(3)
+                    Try
+                        item.Index = CDec(dt.Rows(rowindex).Item(3))
+                    Catch ex As Exception
+                        item.Index = 0
+                    End Try
+
                     item.Vppm = dt.Rows(rowindex).Item(4)
                     item.Vhz = dt.Rows(rowindex).Item(5)
-                    item.IntensityAbs = CDec(dt.Rows(rowindex).Item(6))  '测试这里有问题
+                    Try
+                        item.IntensityAbs = CDec(dt.Rows(rowindex).Item(6))
+                    Catch ex As Exception
+                        item.IntensityAbs = 0
+                    End Try
                     item.IntensityRel = CDec(dt.Rows(rowindex).Item(7))
                     item.HalfWidthPpm = CDec(dt.Rows(rowindex).Item(8))
                     item.HalfWidthHz = CDec(dt.Rows(rowindex).Item(9))
+                    item.CreatedDate = createdDate
                     ' item.Annotation = dt.Rows(rowindex).Item(10)
                     _list.Add(item)
                 Next
@@ -244,9 +265,6 @@ Public Class WinSampleGroupAddData
                     stateMessage += excelFile.ShortName & "文件导入失败。" & vbNewLine
                 End If
         End Select
-
-
-
 
     End Sub
     Sub Dowork_Handler(ByVal sender As Object, ByVal args As DoWorkEventArgs)

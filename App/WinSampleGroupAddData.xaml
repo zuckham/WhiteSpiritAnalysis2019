@@ -182,7 +182,7 @@
             </ListBox>
         </Border>
       
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding stateMessage}">
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding stateMessage}" ScrollViewer.VerticalScrollBarVisibility="Auto">
             
         </TextBox>
 

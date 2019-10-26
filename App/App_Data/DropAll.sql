@@ -11,4 +11,4 @@ DROP TABLE UserRoleInfoes
 Drop table RecordInfoes
 drop table nmrinfoes
 drop table ChromatographNameInfoes
-DROP table _MigrationHistory
+DROP table __MigrationHistory

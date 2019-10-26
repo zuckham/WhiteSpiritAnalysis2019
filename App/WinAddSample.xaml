@@ -1,0 +1,72 @@
+﻿<Window x:Class="WinAddSample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:App"
+        mc:Ignorable="d"
+        Title="新增样本" Height="480" Width="800" 
+        FontSize="14"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" Background="#FF007ACC" >
+            <TextBlock Foreground="WhiteSmoke" FontSize="16" Margin="20,16,2,0">
+               新增样本
+            </TextBlock>
+        </DockPanel>
+
+        <Grid  Grid.Row="1" VerticalAlignment="Top" Margin="20,5"  x:Name="Grid_Single" Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>              
+                <RowDefinition Height="100"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition  Width="1*"/>
+                <ColumnDefinition  Width="80"/>
+                <ColumnDefinition  Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            
+            <Label Grid.Row="0" Grid.Column="0">编号：</Label>
+            <Label Grid.Row="0" Grid.Column="2">添加日期：</Label>
+            <Label Grid.Row="1" Grid.Column="0" >名称：</Label>
+            <Label Grid.Row="2" Grid.Column="0">企业：</Label>
+            <Label Grid.Row="3" Grid.Column="0">酒精度：</Label>
+            <Label Grid.Row="3" Grid.Column="2">储存时间：</Label>
+            <Label Grid.Row="4" Grid.Column="0">原厂评级：</Label>
+            <Label Grid.Row="4" Grid.Column="2">白酒香型：</Label>
+            <Label Grid.Row="5" Grid.Column="0">样品描述：</Label>            
+            <TextBox Grid.Row="0" Grid.Column="1"  Margin="5" x:Name="TB_SingleCode"  />
+            <TextBox  Grid.Row="0" Grid.Column="4"  Margin="5"   x:Name="TB_CreatedDate"/>
+            <TextBox Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="3" Margin="5" x:Name="TB_SingleName"/>
+            <TextBox Grid.Row="2" Grid.Column="1"  Grid.ColumnSpan="3" Margin="5" x:Name="TB_SingleEnterprise"/>
+            <TextBox Grid.Row="3" Grid.Column="1"  Margin="5" x:Name="TB_SingleAcohol" />
+            <TextBox Grid.Row="3" Grid.Column="3"  Margin="5" x:Name="TB_SingleStoredYear" />
+            <TextBox Grid.Row="4" Grid.Column="1"  Margin="5" x:Name="TB_SingleSourceLevel" ></TextBox>
+            <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3"  Margin="5" x:Name="TB_Single_Description" TextWrapping="Wrap"  AcceptsReturn="True"  VerticalScrollBarVisibility="Visible" ></TextBox>
+            <ComboBox Grid.Column="3" Grid.Row="4" Background="Transparent" x:Name="CB_Factor">
+                <ComboBoxItem IsSelected="True">浓香</ComboBoxItem>
+                <ComboBoxItem>酱香</ComboBoxItem>
+                <ComboBoxItem>兼香</ComboBoxItem>
+            </ComboBox>
+
+        </Grid>
+        <DockPanel Grid.Row="2">
+            <WrapPanel HorizontalAlignment="Center">
+                <Button Width="80" Margin="50,4" Height="40" Background="Green" Foreground="WhiteSmoke" FontSize="14" Click="Button_Click" Tag="Confirm">确定</Button>
+                <Button Width="80" Margin="50,4" Background="#FF007ACC" Foreground="WhiteSmoke" FontSize="14" Click="Button_Click" Tag="Cancle">关闭</Button>
+            </WrapPanel>
+            
+        </DockPanel>
+    </Grid>
+</Window>

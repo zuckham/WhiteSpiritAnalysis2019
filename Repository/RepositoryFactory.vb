@@ -38,7 +38,10 @@
         Return New RecordRepository
     End Function
 
-    Public Shared Function NMRRepositroy() As NMRRepository
+    Public Shared Function NMRRepository() As NMRRepository
         Return New NMRRepository
+    End Function
+    Public Shared Function SampleViewRepository() As SampleViewRepository
+        Return New SampleViewRepository
     End Function
 End Class

@@ -9,119 +9,25 @@
       Title="PageCategory"
       FontSize="14px">
     <Page.Resources>
-        <Style TargetType="DataGrid">
-            <!--网格线颜色-->
-            <Setter Property="CanUserResizeColumns" Value="True"/>
-            <Setter Property="Background" Value="AliceBlue" />
-            <Setter Property="BorderBrush" Value="AliceBlue" />
-            <Setter Property="HorizontalGridLinesBrush">
-                <Setter.Value>
-                    <SolidColorBrush Color="AliceBlue"/>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="VerticalGridLinesBrush">
-                <Setter.Value>
-                    <SolidColorBrush Color="AliceBlue"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!--标题栏样式-->
-        <!--<Style  TargetType="DataGridColumnHeader" >
-        <Setter Property="Width" Value="50"/>
-        <Setter Property="Height" Value="30"/>
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="Background" Value="White" />
-        <Setter  Property="FontWeight"  Value="Bold"/>
-    </Style>-->
-
-        <Style TargetType="DataGridColumnHeader">
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="MinWidth" Value="0" />
-            <Setter Property="MinHeight" Value="28" />
-            <Setter Property="Foreground" Value="#323433" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="DataGridColumnHeader">
-                        <Border x:Name="BackgroundBorder" BorderThickness="0,1,0,1"
-                             BorderBrush="AliceBlue"
-                              Width="Auto">
-                            <Grid >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <ContentPresenter  Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                <Path x:Name="SortArrow" Visibility="Collapsed" Data="M0,0 L1,0 0.5,1 z" Stretch="Fill"  Grid.Column="2" Width="8" Height="6" Fill="White" Margin="0,0,50,0"
-                            VerticalAlignment="Center" RenderTransformOrigin="1,1" />
-                                <Rectangle Width="1" Fill="White" HorizontalAlignment="Right" Grid.ColumnSpan="1" />
-                                <!--<TextBlock  Background="Red">
-                            <ContentPresenter></ContentPresenter></TextBlock>-->
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Height" Value="25"/>
-        </Style>
-        <!--行样式触发-->
-        <!--背景色改变必须先设置cellStyle 因为cellStyle会覆盖rowStyle样式-->
-        <Style  TargetType="DataGridRow">
-            <Setter Property="Background" Value="White" />
-            <Setter Property="Height" Value="25"/>
-            <Setter Property="Foreground" Value="Black" />
-            <Style.Triggers>
-                <!--隔行换色-->
-                <Trigger Property="AlternationIndex" Value="0" >
-                    <Setter Property="Background" Value="White" />
-                </Trigger>
-                <Trigger Property="AlternationIndex" Value="1" >
-                    <Setter Property="Background" Value="#f2f2f2" />
-                </Trigger>
-
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="LightGray"/>
-                    <!--<Setter Property="Foreground" Value="White"/>-->
-                </Trigger>
-
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Foreground" Value="Black"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!--单元格样式触发-->
-        <Style TargetType="DataGridCell">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="DataGridCell">
-                        <TextBlock TextAlignment="Center" VerticalAlignment="Center"  >
-                           <ContentPresenter />
-                        </TextBlock>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <!--<Setter Property="Background" Value="White"/>
-                <Setter Property="BorderThickness" Value="0"/>-->
-                    <Setter Property="Foreground" Value="Black"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Style/DictDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
     <Grid Background="#FFE6F0F9">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="2"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <!--第一列，目录-->
         <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,20">
             <Button Click="Button_Click" Tag="ShowAll"  Background="Transparent" BorderThickness="0" Margin="10,0" HorizontalAlignment="Left">所有基酒</Button>
             <local:UCCategory Margin="10,10,0,0"  x:Name="Category" />            
         </StackPanel>
-
+        <!--第2列，DataGrid-->
         <StackPanel Grid.Column="1" Background="White" >
             <WrapPanel HorizontalAlignment="Center">
                 <TextBlock VerticalAlignment="Center"  >分类：</TextBlock>
@@ -131,21 +37,20 @@
                 <Button  Click="Button_Click" Tag="Search" Width="60" BorderBrush="{x:Null}" Background="#FF1F6FCF" Foreground="#FFE6EEEB" Height="34" >
                     <TextBlock Style="{DynamicResource FontAwesome}" FontSize="22px">&#xf002;</TextBlock>
                 </Button>
-            </WrapPanel>          
-        
-        <DataGrid x:Name="DG_Data" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
+            </WrapPanel>
+
+            <DataGrid x:Name="DG_Data" AutoGenerateColumns="False"  IsReadOnly="True"  AlternatingRowBackground="#FFDDEBFF" Margin="10,5,10,0">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="编号" Binding="{Binding Sample.Code}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="分类"  Binding="{Binding CategorisLabel}">
-                        
-                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="编号" Binding="{Binding Sample.Code}" MinWidth=" 40"/>
+                    <DataGridTextColumn Header="名称" Binding="{Binding Sample.Name}" MinWidth="50"/>
+                    <DataGridTextColumn Header="分类"  Binding="{Binding CategorisLabel}" MinWidth=" 80"/>
                     <DataGridTemplateColumn Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <WrapPanel>
-                                    <Button Click="Item_Click" CommandParameter="{Binding Sample}" Background="#FFD9EBF7" Margin="5,0" Tag="Back" BorderThickness="0">移除</Button>
-                                    <Button Click="Item_Click" CommandParameter="{Binding Sample}" Background="#FFE6F0F9" Margin="5,0" Tag="Details"  BorderThickness="0">查看数据</Button>
-                                    <Button Click="Item_Click" CommandParameter="{Binding Sample}" Background="#FFFFC4C4" Margin="5,0" Tag="Delete"  BorderThickness="0">删除</Button>
+                                    <Button Click="Item_Click" CommandParameter="{Binding Sample}" Foreground="AliceBlue" Background="#FF0938F7" Margin="5,0" Tag="Details"  BorderThickness="0" MinWidth="50" ToolTip="查看测试数据">查看</Button>
+                                    <Button Click="Item_Click" CommandParameter="{Binding Sample}" Foreground="AliceBlue" Background="#FFFF3300" Margin="5,0" Tag="Back" BorderThickness="0" MinWidth="50" ToolTip="移出基酒，返回样本数据">移除</Button>
+                                    <Button Click="Item_Click" CommandParameter="{Binding Sample}" Foreground="AliceBlue" Background="#FFD52B4D"  Margin="5,0" Tag="Delete"  BorderThickness="0" MinWidth="50" ToolTip="彻底删数据">删除</Button>
                                 </WrapPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -154,8 +59,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <WrapPanel>
-                                    <Button Click="Item_Click" CommandParameter="{Binding Sample}" Background="#FFD9EBF7" Margin="5,0" Tag="Category" BorderThickness="0">重分</Button>
-                                  
+                                    <Button Click="Item_Click" CommandParameter="{Binding Sample}" Background="#FF007711"  Foreground="AliceBlue"  Margin="5,0" MinWidth="50" Tag="Category" BorderThickness="0">重分</Button>                                  
                                 </WrapPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -185,5 +89,50 @@
 
             </ToolBar>
         </ToolBarPanel>
+        <!--第3列，GridSplitter-->
+        <GridSplitter Grid.Column="2" Width="5" HorizontalAlignment="Stretch" Foreground="#FFCD864B"/>
+
+        <!--第4列，Detail-->
+        <Border Grid.Column="3" Grid.Row="1" Background="AliceBlue">
+            <Grid   x:Name="Grid_Single"  Margin="20,30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="100"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition  Width="6*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" >白酒类型</Label>
+                <Label Grid.Row="1" Grid.Column="0">编号：</Label>
+                <Label Grid.Row="2" Grid.Column="0">添加日期：</Label>
+                <Label Grid.Row="3" Grid.Column="0">名称：</Label>
+                <Label Grid.Row="4" Grid.Column="0">企业：</Label>
+                <Label Grid.Row="5" Grid.Column="0">酒精度：</Label>
+                <Label Grid.Row="6" Grid.Column="0">储存时间：</Label>
+                <Label Grid.Row="7" Grid.Column="0">原厂评级：</Label>
+                <Label Grid.Row="8" Grid.Column="0">样品描述：</Label>
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="5" IsReadOnly="True" x:Name="TB_SingleID" Text="{Binding Path=Factor}"></TextBox>
+                <TextBox Grid.Row="1" Grid.Column="1"  Margin="5" x:Name="TB_SingleCode" Text="{Binding Path=Code}" />
+                <TextBox Grid.Row="2" Grid.Column="1"  Margin="5" x:Name="TB_SingleDate" Text="{Binding Path=CreatedDate,StringFormat='yyyy-MM-dd HH:mm:ss'}"/>
+                <TextBox Grid.Row="3" Grid.Column="1"  Margin="5" x:Name="TB_SingleName" Text="{Binding Path=Name}"/>
+                <TextBox Grid.Row="4" Grid.Column="1"  Margin="5" x:Name="TB_SingleEnterprise" Text="{Binding Path=Enterprise}"/>
+                <TextBox Grid.Row="5" Grid.Column="1"  Margin="5" x:Name="TB_SingleAcohol" Text="{Binding Path=acohol}"/>
+                <TextBox Grid.Row="6" Grid.Column="1"  Margin="5" x:Name="TB_SingleStoredYear" Text="{Binding Path=StoredYear}"/>
+                <TextBox Grid.Row="7" Grid.Column="1"  Margin="5" x:Name="TB_SingleSourceLevel" Text="{Binding Path=SourceLevel}"></TextBox>
+                <TextBox Grid.Row="8" Grid.Column="1"  Margin="5" x:Name="TB_Single_Description" TextWrapping="Wrap"  AcceptsReturn="True"  VerticalScrollBarVisibility="Visible" Text="{Binding Path=Description}"></TextBox>
+                <Button Grid.Row="9" Grid.Column="0" Background="Red" Foreground="#FFF5F2F2" Tag="Del" x:Name="BT_AddConfirm" Click="Button_Click" Width="80" Margin="5">删除</Button>
+                <Button Grid.Row="9" Grid.Column="1" Background="#FF196895" Foreground="#FFF5F2F2" Tag="Edit" x:Name="BT_EditConfirm" Click="Button_Click" Width="80" Margin="5">修改</Button>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

@@ -1,1 +1,5 @@
 磁谱去vppm前50，色谱全，光谱取每100个数的均值。
+
+磁谱中ν(F1) [ppm]	ν(F1) [Hz] 是坐标，Intensity [abs]	Intensity [rel]是面积，Half width [ppm]	Half width [Hz]半峰值。取Intensity [abs]最大的50个值，不对应坐标。
+
+

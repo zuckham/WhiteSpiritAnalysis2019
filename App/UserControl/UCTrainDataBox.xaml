@@ -1,0 +1,113 @@
+﻿<UserControl x:Class="UCTrainDataBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:App"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="800"
+             Background="White">
+    <UserControl.Resources>
+        <Style TargetType="ListBoxItem">
+
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="180"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <ListBox  Grid.Row="0" x:Name="LB_Main" MinHeight="60" MinWidth="500" PreviewMouseLeftButtonDown="PickSample"  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Image  Width ="50"  Height="50" Source="../images/SampleBlue.png" Tag="{Binding Name}"/>
+                        <TextBlock Text="{Binding Code}"></TextBlock>                       
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ToolBarTray  Grid.Row="1">
+            <ToolBar  ToolBarTray.IsLocked="True">
+                <Button Tag="Import" Click="Button_Click">导入</Button>
+                <Button Tag="ImportAll" Click="Button_Click">所有基酒</Button>
+                <Button Tag="Refresh" Click="Button_Click">刷新</Button>
+                <TextBox  TextWrapping="Wrap"  Width="120" x:Name="TB_Key"/>
+                <Button  Click="Button_Click"  Tag="Search" ToolTip="查找">
+                    <TextBlock Style="{DynamicResource FontAwesome}">&#xf002;</TextBlock>
+                </Button>
+            </ToolBar>
+            <ToolBar>                     
+               
+                <Button Tag="First" Click="Button_Click" ToolTip="首页" MinWidth="30">                   
+                        <TextBlock Style="{DynamicResource FontAwesome}" >&#xf048;</TextBlock>                  
+                </Button>
+                <Button Tag="Previous" Click="Button_Click"  ToolTip="上一页" MinWidth="30">
+                    <TextBlock Style="{DynamicResource FontAwesome}">&#xf053;</TextBlock></Button>
+                <TextBlock x:Name="TB_Nav" VerticalAlignment="Center"></TextBlock>                
+                <Button Tag="Next" Click="Button_Click" ToolTip="下一页" MinWidth="30" Margin="0,0,0,1" VerticalAlignment="Bottom">
+                        <TextBlock Style="{DynamicResource FontAwesome}" >&#xf054;</TextBlock>
+                   </Button>                
+                <Button Tag="Last" Click="Button_Click" ToolTip="末页" MinWidth="30">
+                    <TextBlock Style="{DynamicResource FontAwesome}" >&#xf051;</TextBlock>                    
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+       
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+               
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="ListBox">
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                 <WrapPanel IsItemsHost="True" >                                    
+                                </WrapPanel>
+                            </ItemsPanelTemplate>                            
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="ItemTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Image  Width ="50"  Height="50" Source="../images/SampleYellow.png" Tag="{Binding Name}"/>
+                                    <TextBlock Text="{Binding Code}"></TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                  
+                </Style>
+            </Grid.Resources>
+            <StackPanel Grid.Column="0">
+                <TextBlock>特级</TextBlock>
+                <ListBox MinHeight="250" MinWidth="100" Margin="10" AllowDrop="True" x:Name="LB_1" Tag="list1" Drop="ListBox_Drop" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="LB_1_MouseDoubleClick"></ListBox>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <TextBlock>优级</TextBlock>
+                <ListBox MinHeight="250" MinWidth="100" Margin="10" AllowDrop="True" x:Name="LB_2" Tag="list2"  Drop="ListBox_Drop" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="LB_2_MouseDoubleClick"></ListBox>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <TextBlock>一级</TextBlock>
+                <ListBox MinHeight="250" MinWidth="100" Margin="10" AllowDrop="True" x:Name="LB_3" Tag="list3"  Drop="ListBox_Drop" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="LB_3_MouseDoubleClick"></ListBox>
+            </StackPanel>
+            <StackPanel Grid.Column="3">
+                <TextBlock>二级</TextBlock>
+                <ListBox MinHeight="250" MinWidth="100" Margin="10" AllowDrop="True" x:Name="LB_4" Tag="list4"  Drop="ListBox_Drop" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="LB_4_MouseDoubleClick"></ListBox>
+            </StackPanel>
+           
+        </Grid>
+    </Grid>
+</UserControl>
