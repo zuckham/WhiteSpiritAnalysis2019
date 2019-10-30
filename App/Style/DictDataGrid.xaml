@@ -82,6 +82,15 @@
         </Style.Triggers>
     </Style>
     <!--单元格样式触发-->
-    
-    
+    <Style TargetType="DataGridCell">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridCell">
+                    <TextBlock  VerticalAlignment="Center"  >
+                           <ContentPresenter />
+                    </TextBlock>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>        
+    </Style>    
 </ResourceDictionary>

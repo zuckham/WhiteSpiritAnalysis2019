@@ -34,7 +34,6 @@ Public Class UCCategory
     Function LoadCategory() As List(Of Node)
         Dim q = From s In cateService.GetAllCategories Select New Node With {.ID = s.ID, .Description = s.Description, .IsContainer = s.IsContainer, .Name = s.Name, .Order = s.Order, .ParentID = s.ParentID}
         Dim list = q.ToList
-
         Return list
     End Function
 
@@ -93,7 +92,7 @@ Public Class UCCategory
 
     Private Sub DeleteCategory(ID As Integer)
 
-
+        If ID < 6 Then Exit Sub
         Dim cate = cateService.Read(ID)
         '删除目录的时候必须保证有1个基类
         If cate.ParentID = 0 Then

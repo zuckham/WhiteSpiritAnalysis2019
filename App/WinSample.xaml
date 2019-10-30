@@ -41,12 +41,9 @@
             </StackPanel.Resources>
             <Label  Foreground="#FFF5F3F3" VerticalAlignment="Center">当前样品信息</Label>
             <TextBlock VerticalAlignment="Center">编号：</TextBlock>
-            <TextBlock Text="{Binding Sample.Code, Mode=OneWay}" ></TextBlock>
-            <TextBlock VerticalAlignment="Center">描述：</TextBlock>
-            <TextBlock Text="{Binding Sample.Description,Mode=OneWay}" ></TextBlock>
-            <TextBlock VerticalAlignment="Center">数据：</TextBlock>
-            <TextBlock Text="{Binding DataDescription, Mode=OneWay}" ></TextBlock>
-
+            <TextBlock Text="{Binding Code, Mode=OneWay}" ></TextBlock>
+            
+            
         </StackPanel>
         <StackPanel   Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock VerticalAlignment="Center">类目查询：</TextBlock>
@@ -120,7 +117,8 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Grid.Row="4"  HorizontalAlignment="Center" VerticalAlignment="Center">
+            <WrapPanel Margin="0,0,0,10">
             <Label x:Name="LB_CurrentSelected" VerticalAlignment="Center">当前选择</Label>
             <Button  Tag="Add" Click="Button_Click" Margin="30,0" Background="#FF797BB2">
                 <WrapPanel  HorizontalAlignment="Center"   >
@@ -129,11 +127,13 @@
                 </WrapPanel>
             </Button>
             <Button  Margin="30,0" Tag="Ok" Click="Button_Click" Background="#FF74BF28" >
-                <WrapPanel   >
+                <WrapPanel>
                     <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="20px"   Foreground="#FFF5F3F3">&#xf0c7;</Label>
                     <TextBlock VerticalAlignment="Center"  Foreground="#FFF5F3F3">确定</TextBlock>
                 </WrapPanel>
             </Button>
+            </WrapPanel>
+            <TextBlock Foreground="#FFA94F4F">提示：MSE或MAE值越大，相似度越低；SIM值越大，相似度越高..</TextBlock>
         </StackPanel>
     </Grid>
 </Window>

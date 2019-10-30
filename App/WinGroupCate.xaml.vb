@@ -48,4 +48,9 @@ Public Class WinGroupCate
     Private Sub LB_Selected_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles LB_Selected.MouseDoubleClick
         selectedNodes.Remove(LB_Selected.SelectedItem)
     End Sub
+    Private Sub SelectedInCategory() Handles UC_Category.Selected
+        If TC_Main.SelectedIndex = 0 Then
+            LB_CurrentSelected.Content = String.Format("{0}({1})", UC_Category.SelectedCategory.Name, UC_Category.SelectedCategory.ID)
+        End If
+    End Sub
 End Class

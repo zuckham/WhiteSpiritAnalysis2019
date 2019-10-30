@@ -244,7 +244,11 @@ Public Class WinSample
         For Each item In _list
             GroupResults.Add(item)
         Next
+        Dim maxSim = GroupResults.Max(Function(s) s.SimValue)
+        Dim maxCate = GroupResults.First(Function(s) s.SimValue = maxSim)
+        MsgBox("最接近的类型是：" & maxCate.CategoryName)
     End Sub
+
 
     Private Sub InitSeries(_dataType As AnalysisInfoType)
         'If Not IsNothing(cartesianChart1.Series) Then cartesianChart1.Series.Clear()

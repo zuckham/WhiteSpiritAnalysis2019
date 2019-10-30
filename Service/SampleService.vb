@@ -20,6 +20,14 @@ Public Class SampleService
 
         Return CurrentRepository.Delete(Sample)
     End Function
+
+    Public Function GoBase(SampleID As Integer) As Boolean
+        Return CurrentRepository.ExecuteSql(“Update sampleInfoes Set IsBase=1,IsSample=0 where ID=" & SampleID) = 1
+    End Function
+    Public Function GoSample(SampleID As Integer) As Boolean
+        Return CurrentRepository.ExecuteSql(“Update sampleInfoes Set IsBase=0,IsSample=1 where ID=" & SampleID) = 1
+    End Function
+
 End Class
 
 

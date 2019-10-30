@@ -253,6 +253,9 @@
     <Compile Include="PageError.xaml.vb">
       <DependentUpon>PageError.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PagePreData.xaml.vb">
+      <DependentUpon>PagePreData.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PageRoleManage.xaml.vb">
       <DependentUpon>PageRoleManage.xaml</DependentUpon>
     </Compile>
@@ -299,20 +302,14 @@
     <Compile Include="WinGroupCate.xaml.vb">
       <DependentUpon>WinGroupCate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WinGroupSample.xaml.vb">
+      <DependentUpon>WinGroupSample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WinSample.xaml.vb">
       <DependentUpon>WinSample.xaml</DependentUpon>
     </Compile>
     <Compile Include="WinSampleGroupAddData.xaml.vb">
       <DependentUpon>WinSampleGroupAddData.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WinSampleGroupAddData1.xaml.vb">
-      <DependentUpon>WinSampleGroupAddData1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WinTrain.xaml.vb">
-      <DependentUpon>WinTrain.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WinTrainData.xaml.vb">
-      <DependentUpon>WinTrainData.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -418,6 +415,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PagePreData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PageRoleManage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -490,23 +491,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WinGroupSample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WinSample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WinSampleGroupAddData.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WinSampleGroupAddData1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WinTrain.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WinTrainData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -558,6 +551,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\brand_bg01.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\welcome2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\bottom.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

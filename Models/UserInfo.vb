@@ -29,14 +29,14 @@ Public Enum LoginState
 End Enum
 
 Public Enum Right As Integer
+    测试数据列表
     样品列表
-    样品新增
+    基酒列表
     样品数据导入
-    样品分析
+    测试数据导入
     样品归类
     基酒类目管理
     基酒样品列表
-    基酒样品修改
     人员角色管理
 End Enum
 

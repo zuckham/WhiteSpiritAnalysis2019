@@ -46,21 +46,26 @@
                 <MenuItem  Click="MenuItem_Click" InputGestureText="Ctrl+O" Tag="Welcome"  FontSize="14px" Style="{StaticResource MgtMenuItem}">
                     <MenuItem.Header>
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
-                            <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="28px"  Foreground="#FFF5F3F3">&#xf0c2;</Label>
+                            <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="28px"  Foreground="#FFF5F3F3">&#xf015;</Label>
                             <Label FontSize="14px" Foreground="#FFF5F3F3">系统首页</Label>
                         </StackPanel>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem   FontSize="14px" Style="{StaticResource MgtMenuItem}">
+                    <MenuItem  Click="MenuItem_Click" InputGestureText="Ctrl+O" Tag="Predata"  FontSize="14px" Style="{StaticResource MgtMenuItem}">
+                        <MenuItem.Header>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="28px"  Foreground="#FFF5F3F3">&#xf0c2;</Label>
+                                <Label FontSize="14px" Foreground="#FFF5F3F3">测试数据</Label>
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem   FontSize="14px" Style="{StaticResource MgtMenuItem}" Click="MenuItem_Click" Tag="Sample">
                     <MenuItem.Header>
                         <StackPanel >
                             <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="28px"  Foreground="#FFF5F3F3">&#xf0ae;</Label>
                             <Label FontSize="14px" Foreground="#FFF5F3F3">样本数据</Label>
                         </StackPanel>                          
-                    </MenuItem.Header>                       
-                        <MenuItem Header="数据批量导入"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="Group"/>
-                        <MenuItem Header="数据浏览"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="Sample"/>
-                        <MenuItem Header="新增数据"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="Add"/>
+                    </MenuItem.Header> 
                     </MenuItem>
                 <MenuItem  InputGestureText="Ctrl+W" Style="{StaticResource MgtMenuItem}" Click="MenuItem_Click" Tag="Category">
                     <MenuItem.Header>
@@ -72,14 +77,21 @@
 
 
                 </MenuItem>
+                <Separator/>
                 <MenuItem  Click="MenuItem_Click" InputGestureText="Ctrl+C" Tag="Cancel"  Style="{StaticResource MgtMenuItem}" >
                     <MenuItem.Header>
                         <StackPanel Background="#FF007ACC" >
                             <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="28px" Foreground="#FFF5F3F3">&#xf268;</Label>
-                            <Label Foreground="#FFF5F3F3" FontSize="14px">计算设置</Label>
+                                <Label Foreground="#FFF5F3F3" FontSize="14px">数据管理</Label>
                         </StackPanel>
                     </MenuItem.Header>
-                    <MenuItem Style="{StaticResource MgtSubMenuItem}" Header="数据训练" Click="MenuItem_Click" Tag="Train"/>
+                        
+                        <MenuItem Header="新增样本"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="Add"/>
+                        <MenuItem Header="样本批量导入"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="GroupSample"/>
+                        <MenuItem Header="数据批量导入"  Style="{StaticResource MgtSubMenuItem}" Click="MenuItem_Click" Tag="Group"/>
+                        <Separator/>
+                        <MenuItem Style="{StaticResource MgtSubMenuItem}" Header="数据训练" Click="MenuItem_Click" Tag="Train"/>
+
                     </MenuItem>
                 <MenuItem  Click="MenuItem_Click" InputGestureText="Ctrl+O" Tag="Config" Style="{StaticResource MgtMenuItem}">
                     <MenuItem.Header>

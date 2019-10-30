@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:App"
         mc:Ignorable="d"
         Title="详细信息" Height="800" Width="1000" FontSize="14px"  Icon="images/coctail.ico">
@@ -36,12 +37,12 @@
                     <Setter Property="Foreground" Value="White" />
                 </Style>
             </StackPanel.Resources>
-            <Label  Foreground="#FFF5F3F3" VerticalAlignment="Center">当前样品信息</Label>
+            <Label  Foreground="#FFF5F3F3" VerticalAlignment="Center">样品数据</Label>
             <TextBlock VerticalAlignment="Center">编号：</TextBlock>
-            <TextBlock Text="{Binding Sample.Code, Mode=OneWay}" ></TextBlock>
-            <TextBlock VerticalAlignment="Center">描述：</TextBlock>
-            <TextBlock Text="{Binding Sample.Description,Mode=OneWay}" ></TextBlock>
-            <TextBlock VerticalAlignment="Center">数据：</TextBlock>
+            <TextBlock Text="{Binding Code, Mode=OneWay}" Foreground="Yellow" ></TextBlock>
+            <TextBlock VerticalAlignment="Center" Margin="10,0,0,0">名称：</TextBlock>
+            <TextBlock Text="{Binding Name,Mode=OneWay}" ></TextBlock>
+            <TextBlock VerticalAlignment="Center" Margin="10,0,0,0">   数据：</TextBlock>
             <TextBlock Text="{Binding DataDescription, Mode=OneWay}" ></TextBlock>
 
         </StackPanel>
@@ -55,13 +56,20 @@
                 </WrapPanel>
             </Button>
         </StackPanel>
-        <TabControl Grid.Row="2"  x:Name="TC_Data">
-            <TabItem Background="White"  >
-                <TabItem.Header>
-                    <Label >光谱（近红外）数据</Label>
-                </TabItem.Header>
-                <Grid >
-                    <DataGrid x:Name="DG_Spectro" 
+        <Grid  Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TabControl   x:Name="TC_Data"  Grid.Column="0">
+                <TabItem Background="White"  >
+                    <TabItem.Header>
+                        <Label >光谱（近红外）数据</Label>
+                    </TabItem.Header>
+                    <Grid >
+                        <DataGrid x:Name="DG_Spectro" 
                               HorizontalScrollBarVisibility="Auto" 
                               VerticalScrollBarVisibility="Auto"  
                               Grid.Row="1" VerticalContentAlignment="Stretch"
@@ -69,19 +77,23 @@
                               Grid.Column="0" 
                               VerticalAlignment="Top" Margin="0" 
                               CanUserAddRows="False" CanUserDeleteRows="False" HorizontalGridLinesBrush="#FF637390" VerticalGridLinesBrush="#FF637390" Foreground="#FF444448"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="色谱仪数据" Background="White">
-                <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="DG_Chromato"  CanUserAddRows="False" CanUserDeleteRows="False"></DataGrid>
-                </Grid>
-            </TabItem>
-            <TabItem Header="核磁共振数据" Background="White">
-                <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="DG_NMR"  CanUserAddRows="False" CanUserDeleteRows="False"></DataGrid>
-                </Grid>
-            </TabItem>
-        </TabControl>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="色谱仪数据" Background="White">
+                    <Grid Background="#FFE5E5E5">
+                        <DataGrid x:Name="DG_Chromato"  CanUserAddRows="False" CanUserDeleteRows="False"></DataGrid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="核磁共振数据" Background="White">
+                    <Grid Background="#FFE5E5E5">
+                        <DataGrid x:Name="DG_NMR"  CanUserAddRows="False" CanUserDeleteRows="False"></DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <GridSplitter  Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Foreground="#FFCD864B" />
+            <lvc:CartesianChart Grid.Column="2" x:Name="CartesianChart1"></lvc:CartesianChart>
+        </Grid>
+        
         <DockPanel Grid.Row="3" Margin="0,0,0,10">
             <ToolBar Height="40" x:Name="ToolBar" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" >
                 <ToolBar.Resources>

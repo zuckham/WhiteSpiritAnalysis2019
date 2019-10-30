@@ -11,65 +11,58 @@
       >
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
             <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="200"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Image HorizontalAlignment="Center"    Source="/images/welcome.png" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="100,100,0,0" MaxHeight="300" x:Name="IMG_1"/>
-        <StackPanel Grid.Column="1" Grid.Row="0" >
-            <StackPanel.Resources>
-                <Style TargetType="Label">
-                    <Setter Property="Margin" Value="10,20,10,0"/>
-                    <Setter Property="FontSize" Value="16px"></Setter>
-                    <Setter Property="Foreground" Value="#FF085E9A"></Setter>                    
-                </Style>
-            </StackPanel.Resources>
-            <StackPanel.Background>
-                <ImageBrush ImageSource="/images/brand_bg01.png"/>
-            </StackPanel.Background>
-            <Image Source="images/title.png" Margin="0,100,50,60" MaxHeight="36" HorizontalAlignment="Left"></Image>
-            <Label MouseDoubleClick="Label_MouseDoubleClick" Tag="Samples">
-                <WrapPanel>
-                    <TextBlock>样本数据：目前待处理有</TextBlock>
-                    <TextBlock  x:Name="TB_Samples" Text="{Binding SamplesCount}"></TextBlock>
-                    <TextBlock>条。</TextBlock>
-                </WrapPanel>
-            </Label>
-            <Label MouseDoubleClick="Label_MouseDoubleClick" Tag="Wines">
-                <WrapPanel>
-                    <TextBlock>基酒数据库：样本</TextBlock>
-                    <TextBlock  x:Name="TB_SpiritWines" Text="{Binding WinesCount}"></TextBlock>
-                    <TextBlock>条。</TextBlock>
-                </WrapPanel>
-            </Label>
-            <Label MouseDoubleClick="Label_MouseDoubleClick" Tag="Category">
-                <WrapPanel>
-                    <TextBlock>基酒数据库：种类</TextBlock>
-                    <TextBlock  x:Name="TB_Categoris" Text="{Binding CategorisCount}"></TextBlock>
-                    <TextBlock>条。</TextBlock>
-                </WrapPanel>
-            </Label>
-            
-            
-        </StackPanel>
-
-        <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" >
-            <WrapPanel Margin="40" x:Name="WP_Login" HorizontalAlignment="Center">
-                <TextBlock Style="{DynamicResource FontAwesome}" FontSize="22px" Margin="5,0" ToolTip="用户名">&#xf007;</TextBlock>               
-                <TextBox MinWidth="200" x:Name="TB_UserName" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"></TextBox>
-                <TextBlock Style="{DynamicResource FontAwesome}" FontSize="22px" Margin="5,0" ToolTip="密码" >&#xf084;</TextBlock>
-                <PasswordBox MinWidth="200" x:Name="TB_Password"    HorizontalContentAlignment="Left" VerticalContentAlignment="Center"></PasswordBox>
-                <Button Background="Green" Foreground="WhiteSmoke" Click="Button_Click">
-                    <TextBlock Margin="10,3">登录</TextBlock></Button>
+        <!--<Grid.OpacityMask>
+            <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                <GradientStop Color="#00000000" Offset="0"/>
+                <GradientStop Color="#00000000" Offset="1"/>
+                <GradientStop Color="#00000000" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.OpacityMask>
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <EventTrigger.Actions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation From="1" To="0" Duration="0:0:1.5" Storyboard.TargetProperty="OpacityMask.(GradientBrush.GradientStops)[1].Offset"/>
+                            <DoubleAnimation From="1" To="0" Duration="0:0:1" BeginTime="0:0:0.5" Storyboard.TargetProperty="OpacityMask.(GradientBrush.GradientStops)[2].Offset"/>
+                            <ColorAnimation To="#FF000000" Duration="0" Storyboard.TargetProperty="OpacityMask.(GradientBrush.GradientStops)[2].Color"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger.Actions>
+            </EventTrigger>
+        </Grid.Triggers>-->
+       
+        
+            <WrapPanel  Grid.Row="0" Grid.Column="1">
+                <Image Source="images/LZLJ.png"  MaxHeight="50" Margin="40,10" />
+                <Image Source="images/suse.png"  MaxHeight="50" DockPanel.Dock="Right"/>
             </WrapPanel>
-            <WrapPanel HorizontalAlignment="Center">
-                <Image Source="/images/lzlj.png" Height="30" Margin="0,0,42,0"/>
-                <Image Source="/images/suse.png" Height="30"/>
-            </WrapPanel>            
-            <TextBlock HorizontalAlignment="Center" Margin="0,0,0,20"   Foreground="#FFBAADAD" >Version 2.0</TextBlock>
+            <Image Source="images/title.png"  MaxHeight="36" Grid.Row="0" Grid.Column="0" Margin="400,50,0,0"></Image>
+       
+        <Image HorizontalAlignment="Center"    Source="/images/welcome2.png" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="0,0,0,0" MaxHeight="300" x:Name="IMG_1" Grid.ColumnSpan="2"/>
+        
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Bottom" >
+            <StackPanel.Background>
+                <ImageBrush ImageSource="/images/bottom.png"/>
+            </StackPanel.Background>
+            <WrapPanel Margin="40" x:Name="WP_Login" HorizontalAlignment="Center">
+                <TextBlock Style="{DynamicResource FontAwesome}" FontSize="30px" Margin="5,0" ToolTip="用户名" VerticalAlignment="Center">&#xf007;</TextBlock>               
+                <TextBox MinWidth="200" x:Name="TB_UserName" MinHeight="45" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="18px"></TextBox>
+                <TextBlock Style="{DynamicResource FontAwesome}" FontSize="30px" Margin="5,0" ToolTip="密码" VerticalAlignment="Center" >&#xf084;</TextBlock>
+                <PasswordBox MinWidth="200" x:Name="TB_Password"    HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="18px"></PasswordBox>
+                <Button Background="Green" Foreground="WhiteSmoke" Click="Button_Click" MinWidth="80">
+                    <TextBlock Margin="5,3" FontSize="18px">登录</TextBlock></Button>
+            </WrapPanel>
+            <TextBlock x:Name="TB_Samples" Foreground="red" HorizontalAlignment="Center"/>
+            <TextBlock HorizontalAlignment="Center" Margin="0,20,0,20" Foreground="#FF333333" >Version 2.0</TextBlock>
         </StackPanel>
     </Grid>
 </Page>

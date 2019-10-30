@@ -74,10 +74,10 @@
                 <TextBlock>页面导航：</TextBlock>
                 <TextBlock>每页显示</TextBlock>
                 <ComboBox x:Name="CB_PageSize" VerticalContentAlignment="Center">
-                    <ComboBoxItem IsSelected="True">10</ComboBoxItem>
-                    <ComboBoxItem>20</ComboBoxItem>
+                    <ComboBoxItem IsSelected="True">20</ComboBoxItem>
                     <ComboBoxItem>50</ComboBoxItem>
                     <ComboBoxItem>100</ComboBoxItem>
+                    <ComboBoxItem>500</ComboBoxItem>
                 </ComboBox>
                 <Button  Tag="FirstPage" Click="Button_Click">首页</Button>
                 <Button  Tag="PreviousPage" Click="Button_Click">上一页</Button>

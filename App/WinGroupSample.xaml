@@ -1,0 +1,196 @@
+﻿<Window x:Class="WinGroupSample"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:App"
+        mc:Ignorable="d"
+        FontSize="14px"
+        Title="批量导入样本数据" Height="750" Width="1000" Icon="images/coctail.ico"
+        >
+    <Window.Resources>
+        <Style TargetType="ToggleButton" x:Key="stlToggleButton">
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border x:Name="Back" Background="#FFF0F0F0" BorderThickness="1" BorderBrush="Transparent">
+                            <Path Name="PathFill" Fill="#FF007ACC" Width="10" Height="6" StrokeThickness="0" Data="M5,0 L10,10 L0,10 z" RenderTransformOrigin="0.5,0.5" Stretch="Fill" Margin="2,0">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="180"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PathFill" Property="Fill" Value="White"></Setter>
+                                <Setter TargetName="Back" Property="Background" Value="#FF007ACC"></Setter>
+                                <Setter TargetName="Back" Property="BorderBrush" Value="#FF007ACC"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ComboBox" x:Key="stlComboBox">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="Foreground" Value="#FF007ACC"></Setter>
+            <Setter Property="Margin" Value="0,0,0,0"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition MinWidth="100"/>
+                                <ColumnDefinition  Width="20"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox  Grid.Column="0" IsReadOnly="True" Text="{TemplateBinding Text}" VerticalAlignment="Center" BorderThickness="0"  Background="Transparent" Foreground="WhiteSmoke"></TextBox>
+                            <Border  Grid.Column="0" BorderThickness="1,1,0,1" BorderBrush="#FF4F7DCA" CornerRadius="1,0,0,1">
+                            </Border>
+                            <Border Grid.Column="1" BorderThickness="0,1,1,1" BorderBrush="#FF4F7DCA" CornerRadius="0,1,1,0">
+                                <ToggleButton Style="{StaticResource stlToggleButton}" IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press"></ToggleButton>
+                            </Border>
+                            <Popup IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" x:Name="Popup" Focusable="False" AllowsTransparency="True" PopupAnimation="Slide">
+                                <Border CornerRadius="1" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{TemplateBinding ActualWidth}" x:Name="DropDown" SnapsToDevicePixels="True">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="Black" BlurRadius="2" ShadowDepth="0" Opacity="0.5"/>
+                                    </Border.Effect>
+                                    <ScrollViewer Margin="4,6,4,6" Style="{DynamicResource ScrollViewerStyle}" MaxHeight="{TemplateBinding MaxDropDownHeight}" SnapsToDevicePixels="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                                        <!-- StackPanel 用于显示子级，方法是将 IsItemsHost 设置为 True -->
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" Background="White"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style TargetType="CheckBox" x:Key="stlCheckBox">
+            <Setter Property="IsChecked" Value="False"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#999"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <DockPanel  Background="{TemplateBinding Background}" ToolTip="{TemplateBinding Content}" LastChildFill="False" Width="{TemplateBinding Width}">
+                            <TextBlock Margin="2,0,0,0" DockPanel.Dock="Left" Style="{DynamicResource FontAwesome}"  Foreground="#FF505050"  FontSize="16px"  x:Name="_img" Text="&#xf0c8;"></TextBlock>
+                            <TextBlock DockPanel.Dock="Left" Foreground="{TemplateBinding Foreground}" Margin="2,0,0,0" VerticalAlignment="Center" Text="{Binding Content,RelativeSource={RelativeSource TemplatedParent}}" />
+                        </DockPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="_img" Property="Text"  Value="&#xf00c;"/>
+                                <Setter TargetName="_img" Property="Foreground" Value="Green"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter TargetName="_img" Property="Text" Value="&#xf00d;"/>
+                                <Setter TargetName="_img" Property="Foreground" Value="Red"></Setter>
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="55*"/>
+            <ColumnDefinition Width="62*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="675*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Background="#FF007ACC" Grid.ColumnSpan="3" >
+            <WrapPanel HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Center"  x:Name="CurrentSamplePanel">
+                <Button Background="#FF797BB2" Foreground="White" Tag="Open" Click="Button_Click" Margin="10,0,0,0">
+                    <WrapPanel >
+                        <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="18px"  Foreground="#FFF5F3F3">&#xf002;</Label>
+                        <TextBlock  VerticalAlignment="Center" Margin="5,0">打开</TextBlock>
+                    </WrapPanel>
+                </Button>
+                <Button Background="#FF797BB2" Foreground="White" Tag="Add" Click="Button_Click" >
+                    <WrapPanel >
+                        <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="18px"  Foreground="#FFF5F3F3">&#xf067;</Label>
+                        <TextBlock  VerticalAlignment="Center" Margin="5,0">增加</TextBlock>
+                    </WrapPanel>
+                </Button>
+                <Button Background="#FF74BF28" Foreground="White" Tag="Save" Click="Button_Click">
+                    <WrapPanel >
+                        <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="18px"  Foreground="#FFF5F3F3">&#xf0c7;</Label>
+                        <TextBlock  VerticalAlignment="Center" Margin="5,0">导入</TextBlock>
+                    </WrapPanel>
+                </Button>
+                <Button Background="#FF488AD8" Foreground="White"  Margin="50,0,0,0">
+                    <Button.ToolTip>
+                        <StackPanel Background="Azure">
+                            <TextBlock  TextWrapping="Wrap">
+                                本窗体主要从Excel文件导入实现样本的基本信息，只包含样本的编号、名称、酒精度数、香型、生产厂商、存储日期等。Exeel文件模板，请安装目录下Template文件夹下samplTemplate.xlsx文件。
+                            </TextBlock>
+                        </StackPanel>
+                    </Button.ToolTip>
+                    <WrapPanel >
+                        <Label Style="{DynamicResource FontAwesome}" HorizontalAlignment="Center" FontSize="18px"  Foreground="#FFF5F3F3">&#xf059;</Label>
+                        <TextBlock  VerticalAlignment="Center" Margin="5,0">帮助</TextBlock>
+                    </WrapPanel>
+                </Button>
+
+            </WrapPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Background="#FFE6F2F3" Orientation="Vertical" x:Name="SP_Progress" Grid.ColumnSpan="3" >
+            <Label Margin="0,0,0,0" Foreground="#88000000" HorizontalAlignment="Center"  >
+                <WrapPanel>
+                    <TextBlock Text="{Binding CurrentDataName}"></TextBlock>
+                    <TextBlock >第</TextBlock>
+                    <TextBlock Text="{Binding ElementName=PB_main,Path=Value}"></TextBlock>
+                    <TextBlock>/</TextBlock>
+                    <TextBlock Text="{Binding ElementName=PB_main,Path=Maximum}"></TextBlock>
+                    <TextBlock>个</TextBlock>
+                </WrapPanel>
+            </Label>
+            <ProgressBar Height="20" Background="#FFE6F2F3"  Margin="10,0,10,10"   Maximum="{Binding CurrentDataFilesCount}" x:Name="PB_main" />
+        </StackPanel>
+        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+            <Border.Resources>
+                <DataTemplate x:Key="ListBoxTemplate">
+                    <StackPanel>
+                        <DockPanel>
+                            <TextBlock Text="{Binding ShortName}"></TextBlock>
+                            <CheckBox IsChecked="{Binding IsLoadedData}" Style="{StaticResource stlCheckBox}" DockPanel.Dock="Right" >读取</CheckBox>
+                            <CheckBox IsChecked="{Binding IsImported}" Style="{StaticResource stlCheckBox}"  DockPanel.Dock="Right">导入</CheckBox>
+                        </DockPanel>
+
+                    </StackPanel>
+                </DataTemplate>
+            </Border.Resources>
+
+            <ListBox  MinHeight="300" Margin="10"  ScrollViewer.VerticalScrollBarVisibility="Auto" ItemTemplate="{StaticResource ListBoxTemplate}" x:Name="LB_Files" >
+
+            </ListBox>
+        </Border>
+
+        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding stateMessage}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+        </TextBox>
+
+
+    </Grid>
+
+
+
+</Window>

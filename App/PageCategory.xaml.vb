@@ -133,11 +133,11 @@ Class PageCategory
             Case "Delete"
                 If MsgBox("操作将样本彻底该项基酒及其所有分析数据，是否继续？", MsgBoxStyle.YesNo, "基酒管理") = MsgBoxResult.No Then Exit Sub
             Case "Category"
-                Dim WinCate As New WinSample(New SampleViewModel(sample))
-                WinCate.Show()
+                'Dim WinCate As New WinSample(New SampleViewModel(sample))
+                'WinCate.Show()
             Case "Details"
-                Dim WinDetail As New WinDetail(sample.ID)
-                WinDetail.Show()
+                'Dim WinDetail As New WinDetail(sample.ID)
+                'WinDetail.Show()
 
         End Select
     End Sub

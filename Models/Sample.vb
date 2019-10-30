@@ -26,3 +26,4 @@ Public Class SampleViewInfo
     Property NmrCount As Integer
 
 End Class
+

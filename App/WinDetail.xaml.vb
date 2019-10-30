@@ -1,5 +1,8 @@
 ﻿Imports Models
 Imports Service
+Imports LiveCharts.Wpf
+Imports LiveCharts
+Imports System.ComponentModel
 Public Class WinDetail
     Private Shared spectroService As New SpectrographService
     Private Shared chromatoService As New ChromatographService
@@ -11,14 +14,19 @@ Public Class WinDetail
     Private Shared PagerChromato As New PagerInfo With {.CurrentPage = 1, .PageSize = 20, .TotalRecords = 0}
     Private Shared PagerNMR As New PagerInfo With {.CurrentPage = 1, .PageSize = 20, .TotalRecords = 0}
     Private Shared ChromatoNames As List(Of ChromatographNameInfo) = chromatoNameService.FindList(Function(s) True, "Order", True).ToList
+
+    Private ChartValues As LiveCharts.ChartValues(Of Double)
+    Private SeriesCollection As SeriesCollection
+    Private axisX As Axis
+
     ReadOnly Property CurrentSample As SampleViewModel
-    Sub New(SampleID As Integer)
+    Sub New(_SampleID As SampleViewModel)
 
         ' 此调用是设计器所必需的。
         InitializeComponent()
-
+        CurrentSample = _SampleID
         ' 在 InitializeComponent() 调用之后添加任何初始化。
-        CurrentSample = New SampleViewModel(SampleID)
+
         LoadChromatoData()
         LoadSpectroData()
         LoadNMRData()
@@ -116,6 +124,7 @@ Public Class WinDetail
                         LoadNMRData()
                 End Select
         End Select
+        LoadChart()
     End Sub
 
 
@@ -125,11 +134,43 @@ Public Class WinDetail
         Select Case tc.SelectedIndex
             Case 0
                 ToolBar.DataContext = PagerSpectro
+
             Case 1
                 ToolBar.DataContext = PagerChromato
+
             Case 2
                 ToolBar.DataContext = PagerNMR
         End Select
+        LoadChart()
+    End Sub
 
+    Private Sub LoadChart()
+        ChartValues = New ChartValues(Of Double)
+        axisX = New Axis()
+        Dim labels As New List(Of String)
+        '如果是色谱，那么纵坐标是，横坐标是
+        Select Case TC_Data.SelectedIndex
+            Case 0
+                For Each item In DG_Spectro.ItemsSource
+                    ChartValues.Add(item.T)
+                    labels.Add(item.Cm)
+                Next
+            Case 1
+                For Each item In DG_Chromato.ItemsSource
+                    ChartValues.Add(item.RT)
+                    labels.Add(item.Name)
+                Next
+            Case 2
+                For Each item In DG_NMR.ItemsSource
+                    ChartValues.Add(item.IntensityRel)
+                    labels.Add(item.Peak)
+                Next
+        End Select
+        axisX.Labels = labels
+        SeriesCollection = New SeriesCollection
+        SeriesCollection.Add(New LineSeries With {.Values = ChartValues})
+        CartesianChart1.AxisX.Clear()
+        CartesianChart1.AxisX.Add(axisX)
+        CartesianChart1.Series = SeriesCollection
     End Sub
 End Class

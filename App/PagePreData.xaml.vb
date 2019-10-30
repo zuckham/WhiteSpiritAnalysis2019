@@ -1,6 +1,6 @@
 ﻿Imports Models
 Imports Service
-Partial Class PageSample
+Class PagePreData
     Sub New()
 
         ' 此调用是设计器所必需的。
@@ -12,7 +12,6 @@ Partial Class PageSample
         LoadSamples()
     End Sub
     Private Shared Pager As New PagerInfo
-
     Private Shared service As New SampleService
     Private Shared sampleCateService As New SampleCategoryService
     Private Sub LoadSamples()
@@ -21,7 +20,7 @@ Partial Class PageSample
         If Not String.IsNullOrWhiteSpace(TB_Code.Text) Then
             keyword = TB_Code.Text
         End If
-        DG_Samples.ItemsSource = SampleViewModel.Search(keyword, Pager, IsExact, True, False)
+        DG_Samples.ItemsSource = SampleViewModel.Search(keyword, Pager, IsExact, False, False)
         TB_Page.Text = Pager.CurrentPage
         TB_PageShow.Text = Pager.PageNavStr
         TB_PageShow2.Text = String.Format("查询结果 ：共有{0}页，{1}个样本数据。"， Pager.TotalPage, Pager.TotalRecords)
@@ -78,15 +77,15 @@ Partial Class PageSample
                         currentSample.SourceLevel = TB_SingleSourceLevel.Text
                         currentSample.StoredYear = TB_SingleStoredYear.Text
                         service.Update(currentSample)
-
                         MsgBox("修改成功！")
                     Catch ex As Exception
                         MsgBox(“数据格式不规范  ” & ex.Message)
                     End Try
                 End If
-            Case "GoBase"
-                If MsgBox("操作将会将数据送人基酒库，是否继续", MsgBoxStyle.YesNo, "样本数据") = MsgBoxResult.No Then Exit Sub
+            Case "GoSample"
                 If IsNothing(DG_Samples.SelectedItem) Then Exit Sub
+                If MsgBox("操作将会将数据送人样本库，是否继续", MsgBoxStyle.YesNo, "样本数据") = MsgBoxResult.No Then Exit Sub
+
                 Dim currentSample As SampleInfo = Grid_Single.DataContext
                 If String.IsNullOrEmpty(TB_SingleCode.Text) Then
                     TB_SingleCode.Focus()
@@ -102,8 +101,8 @@ Partial Class PageSample
                         currentSample.Name = TB_SingleName.Text
                         currentSample.SourceLevel = TB_SingleSourceLevel.Text
                         currentSample.StoredYear = TB_SingleStoredYear.Text
-                        currentSample.IsBase = True
-                        currentSample.IsSample = False
+                        currentSample.IsBase = False
+                        currentSample.IsSample = True
                         service.Update(currentSample)
 
                         MsgBox("修改成功！")
@@ -118,14 +117,12 @@ Partial Class PageSample
     Private Sub Item_Click(sender As Object, e As RoutedEventArgs)
         Dim bt As Button = sender
         Select Case bt.Tag
-            Case "GroupBase"
-                If MsgBox("是否将所选样本批量加入基酒库？"， MsgBoxStyle.YesNo, "样本数据") = MsgBoxResult.No Then Exit Sub
+            Case "GroupSample"
+                If MsgBox("是否将所选样本批量加入样本库？"， MsgBoxStyle.YesNo, "测试数据") = MsgBoxResult.No Then Exit Sub
                 Dim targets As List(Of SampleViewModel) = DirectCast(DG_Samples.ItemsSource, List(Of SampleViewModel)).Where(Function(s) s.IsChecked = True).ToList
                 If targets.Any Then
                     For Each item In targets
-                        If sampleCateService.Exist(Function(s) s.SampleID = item.ID) Then
-                            service.GoBase(item.ID)
-                        End If
+                        service.GoSample(item.ID)
                     Next
                 End If
                 LoadSamples()

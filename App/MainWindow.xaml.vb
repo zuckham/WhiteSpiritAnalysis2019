@@ -18,6 +18,16 @@ Public Class MainWindow
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
         Dim mi As MenuItem = sender
         Select Case mi.Tag
+            Case "Predata"
+                If CurrentLogin.IsLogined Then
+                    If UserService.CheckRight(Models.Right.测试数据列表, CurrentLogin.CurrentUserRoles) Then
+                        MainFrame.Navigate(New Uri("PagePreData.xaml", UriKind.Relative)）
+                    Else
+                        Dim page As New PageError(0)
+                        MainFrame.Navigate(page）
+                    End If
+                End If
+
             Case "Sample"
                 If CurrentLogin.IsLogined Then
                     If UserService.CheckRight(Models.Right.样品列表, CurrentLogin.CurrentUserRoles) Then
@@ -27,14 +37,14 @@ Public Class MainWindow
                         MainFrame.Navigate(page）
                     End If
                 End If
-                MainFrame.Navigate(New Uri("PageSample.xaml", UriKind.Relative)）
+
             Case "Add"
                 Dim win As New WinAddSample
                 win.DataContext = win
                 win.ShowDialog()
             Case "Category"
                 If CurrentLogin.IsLogined Then
-                    If UserService.CheckRight(Models.Right.基酒样品列表, CurrentLogin.CurrentUserRoles) Then
+                    If UserService.CheckRight(Models.Right.基酒列表, CurrentLogin.CurrentUserRoles) Then
                         MainFrame.Navigate(New Uri("PageCategory.xaml", UriKind.Relative)）
                     Else
                         Dim page As New PageError(0)
@@ -49,30 +59,30 @@ Public Class MainWindow
                     MainFrame.Navigate(New Uri("PageWelcome.xaml", UriKind.Relative)）
                 End If
             Case "LogOut"
-                    If CurrentLogin.IsLogined Then
-                        CurrentLogin.UserID = 0
-                        CurrentLogin.UserName = "未登录"
-                        Dim page As New PageError(1)
+                If CurrentLogin.IsLogined Then
+                    CurrentLogin.UserID = 0
+                    CurrentLogin.UserName = "未登录"
+                    Dim page As New PageError(1)
                     MainFrame.Navigate(page）
                 End If
             Case "UserManage"
                 If CurrentLogin.IsLogined Then
-                        If Service.UserService.CheckRight(Models.Right.人员角色管理, CurrentLogin.CurrentUserRoles) Then
-                            MainFrame.Navigate(New Uri("PageUserManage.xaml", UriKind.Relative)）
-                        Else
-                            Dim page As New PageError(0)
-                            MainFrame.Navigate(page）
-                        End If
+                    If Service.UserService.CheckRight(Models.Right.人员角色管理, CurrentLogin.CurrentUserRoles) Then
+                        MainFrame.Navigate(New Uri("PageUserManage.xaml", UriKind.Relative)）
+                    Else
+                        Dim page As New PageError(0)
+                        MainFrame.Navigate(page）
                     End If
+                End If
             Case "RoleManage"
                 If CurrentLogin.IsLogined Then
-                        If Service.UserService.CheckRight(Models.Right.人员角色管理, CurrentLogin.CurrentUserRoles) Then
-                            MainFrame.Navigate(New Uri("PageRoleManage.xaml", UriKind.Relative)）
-                        Else
-                            Dim page As New PageError(0)
-                            MainFrame.Navigate(page）
-                        End If
+                    If Service.UserService.CheckRight(Models.Right.人员角色管理, CurrentLogin.CurrentUserRoles) Then
+                        MainFrame.Navigate(New Uri("PageRoleManage.xaml", UriKind.Relative)）
+                    Else
+                        Dim page As New PageError(0)
+                        MainFrame.Navigate(page）
                     End If
+                End If
             Case "ChangePassword"
                 If CurrentLogin.IsLogined Then
                     MainFrame.Navigate(New Uri("PageChangePassword.xaml", UriKind.Relative)）
@@ -93,7 +103,10 @@ Public Class MainWindow
                         MainFrame.Navigate(page）
                     End If
                 End If
-
+            Case "GroupSample"
+                Dim win As New WinGroupSample
+                win.DataContext = win
+                win.ShowDialog()
         End Select
     End Sub
 

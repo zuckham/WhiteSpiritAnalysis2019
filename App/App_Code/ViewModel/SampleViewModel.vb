@@ -15,11 +15,13 @@ Public Class SampleViewModel
     Property Name As String
     Property Code As String
     Property CreatedDate As Date
-
+    Property IsBase As Boolean
     Sub New(_sample As SampleInfo)
         ID = _sample.ID
         Code = _sample.Code
         Name = _sample.Name
+        IsBase = _sample.IsBase
+        IsSample = _sample.IsSample
         CreatedDate = _sample.CreatedDate
         SpectrographDataCount = SpecSer.Count(Function(c) c.SampleID = ID)
         ChromatographDataCount = ChromaChildSer.Count(Function(c) c.SampleID = ID)
@@ -37,6 +39,8 @@ Public Class SampleViewModel
         SpectrographDataCount = _sample.SpectrographCount
         ChromatographDataCount = _sample.ChroamtographCount
         NMRDataCount = _sample.NmrCount
+        IsBase = _sample.IsBase
+        IsSample = _sample.IsSample
     End Sub
     Private _IsChecked As Boolean
     Property IsChecked As Boolean
@@ -48,9 +52,7 @@ Public Class SampleViewModel
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs("IsChecked"))
         End Set
     End Property
-
     Property SpectrographDataCount As Integer
-
     Property ChromatographDataCount As Integer
     ReadOnly Property DataDescription As String
         Get
@@ -58,14 +60,13 @@ Public Class SampleViewModel
         End Get
     End Property
     Property NMRDataCount As Integer
-
-
     Public Shared Function Trans(Samples As IQueryable(Of SampleViewInfo)) As List(Of SampleViewModel)
         If Not Samples.Any Then Return Nothing
         Dim q = From s In Samples Select New SampleViewModel With {
                                       .ID = s.ID,
                                       .Code = s.Code,
                                       .Name = s.Name,
+                                      .IsBase = s.IsBase,
                                       .IsSample = s.IsSample,
                                       .ChromatographDataCount = s.ChroamtographCount,
                                       .CreatedDate = s.CreatedDate,
@@ -76,25 +77,23 @@ Public Class SampleViewModel
         Return q.ToList
 
     End Function
-    Public Shared Function Search(keyword As String, pager As PagerInfo, IsExact As Boolean) As List(Of SampleViewModel)
+    Public Shared Function Search(keyword As String, pager As PagerInfo, IsExact As Boolean, isSample As Boolean, isBase As Boolean) As List(Of SampleViewModel)
         Dim q As IQueryable(Of SampleViewInfo)
 
         If Not String.IsNullOrWhiteSpace(keyword) Then
-            q = SampleSer.FindPageList(pager.CurrentPage, pager.PageSize, pager.TotalPage, Function(s) （s.Code = keyword Or s.Name = keyword） And Not s.IsBase, "ID", True)
             If IsExact Then
+                q = SampleSer.FindPageList(pager.CurrentPage, pager.PageSize, pager.TotalPage, Function(s) （s.Code = keyword Or s.Name = keyword） And s.IsBase = isBase And s.IsSample = isSample, "ID", True)
             Else
-                q = SampleSer.FindPageList(pager.CurrentPage, pager.PageSize, pager.TotalRecords, Function(s) (s.Code & s.Name).Contains(keyword) And Not s.IsBase, "Code", True)
+                q = SampleSer.FindPageList(pager.CurrentPage, pager.PageSize, pager.TotalRecords, Function(s) (s.Code & s.Name).Contains(keyword) And s.IsBase = isBase And s.IsSample = isSample, "ID", True)
             End If
         Else
-            q = SampleSer.FindPageList(pager.CurrentPage, pager.PageSize, pager.TotalRecords, Function(s) Not s.IsBase, "ID", True)
+            q = SampleSer.FindPageList(pager.CurrentPage, pager.PageSize, pager.TotalRecords, Function(s) s.IsSample = isSample And s.IsBase = isBase, "ID", True)
         End If
         Dim list = Trans(q)
 
         Return list
     End Function
 End Class
-
-
 
 Public Class SampleCategoryViewModel
 
@@ -127,5 +126,9 @@ Public Class SampleCategoryViewModel
             viewmodels.Add(viewmodel)
         Next
         Return viewmodels
+    End Function
+
+    Public Function Search(keyword As String, pager As PagerInfo, categoryID As Integer) As List(Of SampleCategoryViewModel)
+
     End Function
 End Class

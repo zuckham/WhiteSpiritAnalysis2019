@@ -19,12 +19,12 @@ Class PageWelcome
         ' 此调用是设计器所必需的。
         InitializeComponent()
         Try
-            Dim allSamples = sample.Count(Function(s) True)
-            Dim allWines = sampleCate.FindList(Function(s) True, "ID", False).Select(Of Integer)(Function(s) s.SampleID).Distinct.Count
+            'Dim allSamples = sample.Count(Function(s) True)
+            'Dim allWines = sampleCate.FindList(Function(s) True, "ID", False).Select(Of Integer)(Function(s) s.SampleID).Distinct.Count
             Dim allCate = category.Count(Function(s) True)
-            TB_Samples.Text = allSamples - allWines
-            TB_SpiritWines.Text = allWines
-            TB_Categoris.Text = allCate
+            'TB_Samples.Text = allSamples - allWines
+            'TB_SpiritWines.Text = allWines
+            'TB_Categoris.Text = allCate
         Catch ex As Exception
 
             TB_Samples.Text = "数据库连接失败"
@@ -34,7 +34,7 @@ Class PageWelcome
 
 
         If MainWindow.CurrentLogin.UserID > 0 Then
-            WP_Login.Visibility = Visibility.Collapsed
+            WP_Login.Visibility = Visibility.Hidden
         Else
             WP_Login.Visibility = Visibility.Visible
         End If
@@ -57,7 +57,7 @@ Class PageWelcome
                 MainWindow.CurrentLogin.UserID = currentUser.ID
                 MainWindow.CurrentLogin.UserName = currentUser.Name
 
-                WP_Login.Visibility = Visibility.Collapsed
+                WP_Login.Visibility = Visibility.Hidden
             Case Else
                 '提示登录状态
                 MsgBox(lstate.ToString)

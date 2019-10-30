@@ -10,9 +10,9 @@ Public Class DefaultInitializer
         MyBase.Seed(context)
         '增加初始用户
         Dim roles() As RoleInfo = {New RoleInfo With {.RoleName = "管理员", .Right = "1:1:1:1:1:1:1:1:1"},
-                                                  New RoleInfo With {.RoleName = "用户", .Right = "1:1:1:1:1:1:0:0:0"},
+                                                  New RoleInfo With {.RoleName = "用户", .Right = "1:1:1:1:1:1:1:0:1"},
                                                   New RoleInfo With {.RoleName = "访客", .Right = "1:1:0:0:0:0:0:0:0"}
-                                                   }
+          }
         For Each item In roles
             context.Roles.Add(item)
         Next
